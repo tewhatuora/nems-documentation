@@ -21,7 +21,7 @@ module.exports = async function createConfig() {
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
     organizationName: 'tewhatuora', // Usually your GitHub org/user name.
-    projectName: 'nems-standards', // Usually your repo name.
+    projectName: 'nems-documentation', // Usually your repo name.
 
     onBrokenLinks: 'ignore',
     onBrokenMarkdownLinks: 'ignore',
