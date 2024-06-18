@@ -1,5 +1,6 @@
 ﻿---
 title: "Platform Policy"
+sidebar_position: 15
 ---
 
 # National Event Management Service (NEMS) Platform Policy

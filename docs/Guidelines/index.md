@@ -1,6 +1,6 @@
 ---
 title: "Guidelines"
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 These are all the public Events

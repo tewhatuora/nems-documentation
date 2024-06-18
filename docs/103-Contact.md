@@ -1,6 +1,6 @@
 ---
 title: Contact
-slug: /contact
+sidebar_position: 8
 ---
 
 Health NZ Event Standards is a new site - to ask questions, contribute, or give suggestions, please
