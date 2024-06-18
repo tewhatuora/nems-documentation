@@ -10,7 +10,7 @@ module.exports = async function createConfig() {
   const { remarkKroki } = await import('remark-kroki');
   return {
     title: 'Health New Zealand | Te Whatu Ora NEMS Standards',
-    favicon: 'nems-standards/img/favicon-32x32.png',
+    favicon: './img/favicon-32x32.png',
 
     // Set the production url of your site here
     url: 'https://tewhatuora.github.io/',
@@ -107,8 +107,8 @@ module.exports = async function createConfig() {
           hideOnScroll: false,
           logo: {
             alt: 'Health New Zealand | Te Whatu Ora logo',
-            src: 'nems-standards/img/two.svg',
-            srcDark: 'nems-standards/img/two-dark-theme-logo.svg',
+            src: './img/two.svg',
+            srcDark: './img/two-dark-theme-logo.svg',
           },
           items: [
             // {
@@ -116,7 +116,7 @@ module.exports = async function createConfig() {
             //   position: 'right',
             // },
             {
-              href: 'https://github.com/tewhatuora/nems-standards/issues',
+              href: 'https://github.com/tewhatuora/nems-documentation/issues',
               label: 'Raise issue',
               position: 'right',
               target: '_blank',
@@ -153,7 +153,7 @@ module.exports = async function createConfig() {
                   html: `
                       </br>
                       <a href="https://www.govt.nz" target="_blank" rel="noreferrer noopener" aria-label="Hiso">
-                        <img src="nems-standards/img/govt-nz.png" alt="Te Kāwanatanga o Aotearoa — New Zealand Government" style="float:left;width:7.5rem;height:auto;" />
+                        <img src="./img/govt-nz.png" alt="Te Kāwanatanga o Aotearoa — New Zealand Government" style="float:left;width:7.5rem;height:auto;" />
                       </a>
                     `,
                 },
@@ -164,7 +164,7 @@ module.exports = async function createConfig() {
               items: [
                 {
                   label: 'Raise issue',
-                  href: 'https://github.com/tewhatuora/nems-standards/issues',
+                  href: 'https://github.com/tewhatuora/nems-documentation/issues',
                 },
                 {
                   label: 'Hira Marketplace',
@@ -183,7 +183,7 @@ module.exports = async function createConfig() {
                       </br>
                       </br>
                       <a href="http://localhost:3000/" target="_blank" rel="noreferrer noopener" aria-label="Hiso">
-                        <img src="nems-standards/img/hiso-logo.png" alt="Hiso" style="width:300px;height:auto;" />
+                        <img src="./img/hiso-logo.png" alt="Hiso" style="width:300px;height:auto;" />
                       </a>
                     `,
                 },
