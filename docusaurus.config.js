@@ -13,7 +13,7 @@ module.exports = async function createConfig() {
     favicon: 'img/favicon-32x32.png',
 
     // Set the production url of your site here
-    url: 'https://apistandards.digital.health.nz',
+    url: 'https://tewhatuora.github.io/',
     // Set the /<baseUrl>/ pathname under which your site is served
     // For GitHub pages deployment, it is often '/<projectName>/'
     baseUrl: '/nems_documentation/',
@@ -77,12 +77,12 @@ module.exports = async function createConfig() {
                 }
               ]
             ],
-            versions: {
-              current: {
-                label: 'Draft',
-                path: 'draft',
-              },
-            },
+            // versions: {
+            //   current: {
+            //     label: 'Draft',
+            //     path: 'draft',
+            //   },
+            // },
           },
           theme: {
             customCss: [require.resolve('./src/css/custom.css'), require.resolve('@asyncapi/react-component/styles/default.min.css')],
@@ -111,12 +111,12 @@ module.exports = async function createConfig() {
             srcDark: 'img/two-dark-theme-logo.svg',
           },
           items: [
+            // {
+            //   type: 'docsVersionDropdown',
+            //   position: 'right',
+            // },
             {
-              type: 'docsVersionDropdown',
-              position: 'right',
-            },
-            {
-              href: 'https://github.com/tewhatuora/api-standards/issues',
+              href: 'https://github.com/tewhatuora/nems-standards/issues',
               label: 'Raise issue',
               position: 'right',
               target: '_blank',
@@ -164,7 +164,7 @@ module.exports = async function createConfig() {
               items: [
                 {
                   label: 'Raise issue',
-                  href: 'https://github.com/tewhatuora/api-standards/issues',
+                  href: 'https://github.com/tewhatuora/nems-standards/issues',
                 },
                 {
                   label: 'Hira Marketplace',
