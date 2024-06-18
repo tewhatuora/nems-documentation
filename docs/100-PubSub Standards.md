@@ -96,7 +96,7 @@ As an example, for Death Event, the message payload includes deathDate and callb
 
 For more details about death event message payload: Payload.
 
-## <a name="_toc168971896"></a>Message delivery mode and rrder
+## <a name="_toc168971896"></a>Message delivery mode and order
 
 NEMS uses “Guaranteed Messaging” delivery mode to ensure successful message delivery between the publisher and subscriber.
 

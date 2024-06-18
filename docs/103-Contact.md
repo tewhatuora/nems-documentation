@@ -3,7 +3,7 @@ title: Contact
 slug: /contact
 ---
 
-Health NZ API Standards is a new site - to ask questions, contribute, or give suggestions, please
+Health NZ Event Standards is a new site - to ask questions, contribute, or give suggestions, please
 
 [visit the community on Github.](https://github.com/tewhatuora/api-standards)
 

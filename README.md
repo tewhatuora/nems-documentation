@@ -13,7 +13,7 @@
   <h3 align="center">Health New Zealand | Te Whatu Ora NEMS Development and Security Standards</h3>
 
   <p align="center">
-    This GitHub project is the source repository for the Health NZ API Development and Security Standards project, which are officially published at <a href="https://apistandards.digital.health.nz">https://apistandards.digital.health.nz</a>.
+    This GitHub project is the source repository for the Health NZ NEMS Development and Security Standards project, which are officially published at <a href="https://apistandards.digital.health.nz">https://apistandards.digital.health.nz</a>.
     <br />
     <br />
     <a href="https://apistandards.digital.health.nz">View standards website</a>

@@ -95,7 +95,7 @@ title: "Platform Policy"
 
 - Each topic will be assessed for eligibility including additional access controls and exceptions as part of the topic requirements gathering and design process.
 - Eligibility by default will be contingent on subscriber access to the underlying source data resource. For example, a subscriber is considered eligible for the death event if they have access to the National Health Index, which holds the death data.
-- Exceptions or additions to the default eligibility will be defined in the schedule of the “Usage policy” (listed in section Related pPolicies, Pprocedures and rResources).
+- Exceptions or additions to the default eligibility will be defined in the schedule of the “Usage policy” (listed in section Related policies, procedures and resources).
 - Defining eligibility (including additional access controls and exceptions) is the responsibility of source data owner.
 - Implementation of the eligibility, access controls and exceptions where feasible is the responsibility of the National Event Management Service team.
 

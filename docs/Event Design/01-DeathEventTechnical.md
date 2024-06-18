@@ -53,7 +53,7 @@ The topic fields are elaborated in the table below (with **dark-green** for root
 |**Enrolment Event Topic Field**|**Field Type**|**Value**|**Description**|
 | :-: | :-: | :-: | :-: |
 |service-domain|Root|“demographics”|Healthcare service domain|
-|resource|Root|“patient”|Aligned with FHIR EpsodeOfCare resource|
+|resource|Root|“patient”|Aligned with FHIR EpisodeOfCare resource|
 |event category|Root|“death”|Event category|
 |verb|Root|Variable: new, edit, delete|Event action, one of the values|
 |version|Root|“0.1.0”|Starting version|
@@ -115,7 +115,7 @@ The topic fields are elaborated in the table below (with **dark-green** for root
   "properties": {
     "callbackUrl": {
       "type": "string",
-      "description": "Call back url for deseased patient record",     
+      "description": "Call back url for deceased patient record",     
     },
     "deathDate": {
       "type": "string",
@@ -273,7 +273,7 @@ components:
             type: string
             example: v1.0
 channels:
-  demographics/patient/death/{verb}/0.1.0/{district}/{domicle}/{gp_practice}/{nhi_id}:
+  demographics/patient/death/{verb}/0.1.0/{district}/{domicile}/{gp_practice}/{nhi_id}:
     subscribe:
       message:
         $ref: "#/components/messages/DeathNotice"
@@ -308,7 +308,7 @@ channels:
       domicle:
         schema:
           type: "string"
-        x-ep-parameter-name: "domicle"
+        x-ep-parameter-name: "domicile"
 asyncapi: "2.5.0"
 info:
   x-ep-state-name: "DRAFT"
