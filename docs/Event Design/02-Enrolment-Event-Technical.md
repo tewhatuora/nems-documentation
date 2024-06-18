@@ -2,13 +2,18 @@
 title: "Enrollment Event Technical Design"
 ---
 
-This a technical design document for the NEMS enrolment event. The target audiences are those working on enrolment publisher applications, enrolment subscriber applications, and NEMS implementation of enrolment events. 
-# **Background**
-The National Enrolment Service (NES) records the relationship of a patient to their provider for a particular health service. Changes to these relationships (“events”) are of interest to organisations and systems in the health sector. 
-# **Process view**
+This a technical design document for the NEMS enrolment event. The target audiences are those working on enrolment publisher applications, enrolment subscriber applications, and NEMS implementation of enrolment events.
+
+## **Background**
+
+The National Enrolment Service (NES) records the relationship of a patient to their provider for a particular health service. Changes to these relationships (“events”) are of interest to organisations and systems in the health sector.
+
+## **Process view**
+
 Enrolment event process view:
 
-~~~
+~~~text
+
 flowchart LR
     A["NHI/NES Enrolment Change"] --> B("NHI Publisher")
     B -- Enrolment Event ---> C["NEMS"]
@@ -17,10 +22,13 @@ flowchart LR
         y["Subscriber Connector"] --> W\{"Is Relevent"\} -- Yes --> z["Downstream Process"] 
         W --"No"-->v["Discard"]
     end
+
 ~~~
 
 Enrolment events and event data:
-~~~
+
+~~~text
+
 classDiagram
     class Enrolment
     <<interface>> Enrolment
@@ -31,12 +39,15 @@ classDiagram
     Enrolment <|.. Ended
     Enrolment <|.. Updated
     Ended:endReason
+
 ~~~
 
 Note:
 
 - An enrolment transfer should result in two enrolment events: an enrolment end event and an enrolment new event.
-# **Topic taxonomy**
+
+## **Topic taxonomy**
+
 For enrolment events, the topic taxonomy structure follows the overall topic taxonomy structure:
 
 service-domain/resource/event/verb/version/patient-district/facility-district/pho/enrolling-org/service-type
@@ -56,7 +67,7 @@ The topic fields are elaborated in the table below (with **dark-green** for root
 |enrolling-org|Event Property|String value of organisation ID of the enrolment|Organisation ID of the enrolment|
 |service-type|Event Property|[“FLS”,”FLS-NF”,”LMC”,”WCTO”]|[NES Enrolment Type - HIP FHIR Common Terminology Guide v1.8.2 (digital.health.nz)](https://common-ig.hip.digital.health.nz/site/ValueSet-nes-enrolment-type-1.0.html)|
 
-# **Message header (Event metadata)**
+## **Message header (Event metadata)**
 
 |**Header**|**Key Literal**|**Description**|**Required**|**Format/Values**|**Example**|
 | :-: | :-: | :-: | :-: | :-: | :-: |
@@ -72,8 +83,10 @@ The topic fields are elaborated in the table below (with **dark-green** for root
 
 ## Event : Enrolment created
 
-**Payload Schema**
-~~~
+### Payload Schema
+
+~~~json
+
 {
   "$schema": "https://json-schema.org/draft/2019-09/schema",
   "type": "object",
@@ -100,22 +113,27 @@ The topic fields are elaborated in the table below (with **dark-green** for root
     "NHI"
   ]
 }
+
 ~~~
 
-**Example**
-~~~
+### Example
+
+~~~JSON
+
 { 
     "enrolmentId": "xyz1234", 
     "NHI": "ZGT56KB", 
     "dormantNHIs": ["ZZZ0008"]
 }
-~~~
 
+~~~
 
 ## Event : Enrolment ended
 
-**Payload Schema**
-~~~
+### Payload Schema
+
+~~~JSON
+
 {
   "$schema": "https://json-schema.org/draft/2019-09/schema",
   "type": "object",
@@ -158,14 +176,18 @@ The topic fields are elaborated in the table below (with **dark-green** for root
     "endReason"
   ]
 }
+
 ~~~
 
-**Example**
-~~~
+### Example
+
+~~~JSON
+
 {
  "enrolmentId": "xyz1234",
  "NHI": "ZGT56KB",
  "dormantNHIs": ["ZZZ0008"],
  "endReason": "Transfer"
 }
+
 ~~~

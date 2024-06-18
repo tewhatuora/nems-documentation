@@ -28,7 +28,8 @@ These standards and guidelines:
 
 - are intended to apply for all API standards and protocols, however much of the guidance is oriented to REST (Representative State Transfer) or FHIR APIs
 - use hypothetical or actual use cases with a health context to illustrate practical application of the concepts described. Examples do not represent recommended API design and / or data content requirements for Health NZ.
-  :::
+
+:::
 
 ## Target audience
 
