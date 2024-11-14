@@ -216,6 +216,6 @@ NEMS provides simple test units that replicate a NEMS message. As a subscriber y
 
 ##Traceability and Audit
 
-To satisfy the end to end traceability requirements, the subscribers should 
-- record the `messageId`, `messageSubjectId` and `timestamp` in your logs (or traces) if messageSubjectId is NOT NHI
-- record the `messageId` and `timestamp` in your logs (or traces) if messageSubjectId is NHI
+To satisfy the end to end traceability requirements, the subscribers should record the event information upon receiving and discard activities. A subscriber should 
+- record the `messageId`, `messageSubjectId` and `timestamp` in the logs (or traces) if messageSubjectId is NOT NHI
+- record the `messageId` and `timestamp` in the logs (or traces) if messageSubjectId is NHI
