@@ -214,6 +214,8 @@ NEMS also provides the ability to have mock events which allow subscribers to im
 
 NEMS provides simple test units that replicate a NEMS message. As a subscriber you can use these examples to build your test scenarios, e.g. message volume, or error management. These test units can be used without being onboarded to the NEMS platform. It is recommended the system testing is completed to satisfaction before progressing to end-to-end testing.
 
-## Contact information
+##Traceability and Audit
 
-[Contact info here?]
+To satisfy the end to end traceability requirements, the subscribers should 
+- record the `messageId`, `messageSubjectId` and `timestamp` in your logs (or traces) if messageSubjectId is NOT NHI
+- record the `messageId` and `timestamp` in your logs (or traces) if messageSubjectId is NHI
