@@ -161,3 +161,7 @@ The NEMS service has a high availability service level with disaster recovery ca
 There are no specific requirements of the publisher to support NEMS disaster recovery, other than from basic error handling. In the event of a disaster scenario, NEMS would be unavailable for a short period of time while the environment was recovered.  During this time, the publisher application will experience connection errors. Once the environment has been recovered, the publisher will automatically reconnect and should begin processing messages from the point of failure.
 
 It is also important that the publisher can recover from failure to reduce the risk of losing or duplicating events. We recommend you design your disaster recovery process according to the RTO and RPO requirements, which will relate to the data loss you want to tolerate and the timeliness of your messages in a recovery.
+
+##Traceability and Audit
+
+The publisher should at least recording the `messageId`, `messageSubjectId` and `publishing timestamp` in your logs (or traces) to satisfy the end to end traceability requirements.
