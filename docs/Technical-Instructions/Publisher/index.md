@@ -24,10 +24,10 @@ The NEMS event broker is publicly available and requires an internet connection 
 
 |**Protocol**|**Source**|**Target**|**Connection**|
 | :-: | :- | :- | :- |
-|Native|NEMS production environment |nems.services.health.nz|TCP 55443|
-|Native|NEMS test environment|nems-test.services.health.nz|TCP 55443|
-|REST|NEMS production environment|nems.services.health.nz|HTTP 9443|
-|REST|NEMS test environment|nems-test.services.health.nz|HTTP 9443|
+|Native|NEMS production environment |api.nems.digital.health.nz|TCP 55443|
+|Native|NEMS test environment|api.test.nems.digital.health.nz|TCP 55443|
+|REST|NEMS production environment|api.nems.digital.health.nz|HTTP 9443|
+|REST|NEMS test environment|api.test.nems.digital.health.nz|HTTP 9443|
 
 ## Connect and authenticate
 

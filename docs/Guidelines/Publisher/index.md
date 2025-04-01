@@ -64,10 +64,10 @@ The table below provides the network details of NEMS production and test environ
 
 |**Source**|**Target**|**Port**|**Comments**|
 | :- | :- | :- | :- |
-|Publisher application|nems.services.health.nz|55443|TCPS, SMF protocols|
-|Publisher test application|nems-test.services.health.nz|55443|TCPS, SMF protocols|
-|Publisher application|nems.services.health.nz|9443|HTTPS, REST endpoint|
-|Publisher test application|nems-test.services.health.nz|9443|HTTPS, REST endpoint|
+|Publisher application|api.nems.digital.health.nz|55443|TCPS, SMF protocols|
+|Publisher test application|api.test.nems.digital.health.nz|55443|TCPS, SMF protocols|
+|Publisher application|api.nems.digital.health.nz|9443|HTTPS, REST endpoint|
+|Publisher test application|api.test.nems.digital.health.nz|9443|HTTPS, REST endpoint|
 
 ## Publishing patterns
 
@@ -164,4 +164,4 @@ It is also important that the publisher can recover from failure to reduce the r
 
 ##Traceability and Audit
 
-The publisher should at least recording the `messageId`, `messageSubjectId` and `publishing timestamp` in your logs (or traces) to satisfy the end to end traceability requirements.
+The publisher should at least record the `messageId`, `messageSubjectId` and `publishing timestamp` in your logs (or traces) to satisfy the end to end traceability requirements.
