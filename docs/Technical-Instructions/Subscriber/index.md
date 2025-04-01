@@ -41,8 +41,8 @@ The NEMS event broker is publicly available and requires outbound ports to be ac
 
 |**Source**|**Target**|**Port**|
 | :- | :- | :- |
-|NEMS standard production environment for subscribers|nems.services.health.nz|TCP 55443|
-|NEMS standard test environment for subscribers|nems-test.services.health.nz|TCP 55443|
+|NEMS standard production environment for subscribers|api.nems.digital.health.nz|TCP 55443|
+|NEMS standard test environment for subscribers|api.test.nems.digital.health.nz|TCP 55443|
 
 ## Connect and authenticate
 

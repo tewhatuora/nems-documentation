@@ -69,8 +69,8 @@ We recommend and assume that you deploy your subscriber application behind a fir
 
 |**Source**|**Target**|**Port**|**Comments**|
 | :- | :- | :- | :- |
-|nems.services.health.nz|Subscriber production|55443|JMS, SMF protocols|
-|nems-test.services.health.nz|Subscriber non-production|55443|JMS, SMF protocols|
+|api.nems.digital.health.nz|Subscriber production|55443|JMS, SMF protocols|
+|api.test.nems.digital.health.nz|Subscriber non-production|55443|JMS, SMF protocols|
 
 NEMS is configured for maximum availability. It is deployed in a high-availability configuration with a disaster recovery in a remote data centre. Maintenance can occur on the brokers from time-to-time. Maintenance procedures will be applied in a rolling fashion. It is important that subscribers implement retry functionality if they don’t want to be disconnected during maintenance procedures. Given the connection mandates OAuth 2.0, the client application should reconnect when a node is switched. This should happen instantaneously, however during a disaster the outage could be prolonged as there are some manual steps put in place to confirm that the switch of data centres is justified. Availability will adhere to the service level agreement of the platform.
 
