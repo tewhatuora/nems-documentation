@@ -1,7 +1,7 @@
 ---
 title: "Practitioner Event Technical Design"
 ---
-
+ 
 
 This a technical design document for HPI Practitioner NEMS event. The target audiences are those working on enrolment publisher application, enrolment subscriber applications, and NEMS implementation of HPI Practitioner events.  
 
