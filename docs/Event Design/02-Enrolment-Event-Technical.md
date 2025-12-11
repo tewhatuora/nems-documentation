@@ -1,5 +1,5 @@
 ﻿---
-title: "Enrollment Event Technical Design"
+title: "Enrolment Event Technical Design"
 ---
 
 This a technical design document for the NEMS enrolment event. The target audiences are those working on enrolment publisher applications, enrolment subscriber applications, and NEMS implementation of enrolment events.
