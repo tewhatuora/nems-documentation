@@ -22,36 +22,41 @@ Hospital and private facilities (GP, Pharmacy) for HL7 messaging via Healthlink
 Pharmacies for NZePS integration
 
 GP Practices, Community Midwives and others for prescribing 
+
 # **Process view**
 Event process view:
-
+```mermaid
 flowchart LR
+ 
     A["HIP"] --> B("HIP Publisher")
     B -- HIP Event ---> C["NEMS"]
     C -- HIP Event --> D["Subscriber1 Connector"] & E["Subscriber2 Connector"] & F["Subscriber3 Connector"]
 subgraph x["Subscriber Process"]
-  end 
-
+  end
+```
+ 
 Events and event data:
-
+```mermaid
 classDiagram
-  class Facility{
-  <<Interface>>
-  facilityId
-  dormantFacilityIDs
-  resourceVersion
-  }
-  class Created{
-  }
-  class Updated{
-  }
-  Facility <|.. Created
-  Facility <|.. Updated
+  class Facility{
+  <<Interface>>
+  facilityId
+  dormantFacilityIDs
+  resourceVersion
+  }
+  class Created{
+  }
+  class Updated{
+  }
+  Facility <|.. Created
+  Facility <|.. Updated
+```
 
 
 # **Topic taxonomy**
-For facility eve|**Event Topic Field**|**Field Type**|**Value**|**Description**|
-| :-: | :-: | :-: | :-: |
+For facility event
+|**Event Topic Field**|**Field Type**|**Value**|**Description**|
+| :-: | :-: | :-: | :- |
 |service-domain|Root|“provideridentity”|“provider identity” is the service domain of facility events|
 |resource|Root|“location”|The Location resource represents named Facilities at which an organisation provides health services [HPI Location - New Zealand HPI Implementation Guide v1.4.10](https://hpi-ig.hip-uat.digital.health.nz/StructureDefinition-HpiLocation.html) |
 |event category|Root|“facility”|A physical location from which health goods and/or services are provided. They are also referred to as an HPI Facility.|
