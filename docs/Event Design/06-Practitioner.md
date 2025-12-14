@@ -59,7 +59,7 @@ The topic fields are elaborated in the table below (with **dark-green** for root
 |event category|Root|“practitioner”|The set of valid registration authority identifiers.|
 |verb|Root|created, updated|Event action, one of the values|
 |version|Root|“v1”|Starting version|
-|registration authority|Event Property|Registration Authority ID|The regulatory body responsible for the registration of health practitioners e.g. CH Chiropractic Board Register<br> [RaIdentifier - HIP FHIR Common Terminology Guide v1.9.5](https://common-ig.hip.digital.health.nz/site/ValueSet-hpi-ra-identifier-1.0.html) <br>Multiple events will be prompted where the practitioner is associated to multiple Registration Authorities|
+|registration authority|Event Property|Registration Authority ID|The regulatory body responsible for the registration of health practitioners e.g. CH Chiropractic Board Register<br/> [RaIdentifier - HIP FHIR Common Terminology Guide v1.9.5](https://common-ig.hip.digital.health.nz/site/ValueSet-hpi-ra-identifier-1.0.html) <br/>Multiple events will be prompted where the practitioner is associated to multiple Registration Authorities|
 
 
 # **Message header (Event metadata)**
