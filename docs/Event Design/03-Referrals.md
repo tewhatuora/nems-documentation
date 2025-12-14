@@ -1,5 +1,5 @@
 ---
-title: "Existing Implementation Guides".
+title: "Existing Implementation Guides"
 ---
 
 
