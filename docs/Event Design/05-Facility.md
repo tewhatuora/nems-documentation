@@ -1,7 +1,7 @@
 ---
 title: "Facility Event Technical Design"
 ---
-
+  
 This a technical design document for Health Identity HPI Facility NEMS events. The target audiences are those working on enrolment publisher application, enrolment subscriber applications, and NEMS implementation of HPI Facility events.  
 
 # **Background**

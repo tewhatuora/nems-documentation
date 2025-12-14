@@ -1,7 +1,7 @@
 ---
 title: "Organisation Event Technical Design"
 ---
-
+ 
 This a technical design document for the HPI Organisation NEMS event. The target audiences are those working on enrolment publisher application, enrolment subscriber applications, and NEMS implementation of HPI events. 
 
 # **Background**
