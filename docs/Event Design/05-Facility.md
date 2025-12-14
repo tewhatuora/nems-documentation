@@ -26,7 +26,6 @@ GP Practices, Community Midwives and others for prescribing
 Event process view:
 
 flowchart LR
- 
     A["HIP"] --> B("HIP Publisher")
     B -- HIP Event ---> C["NEMS"]
     C -- HIP Event --> D["Subscriber1 Connector"] & E["Subscriber2 Connector"] & F["Subscriber3 Connector"]
