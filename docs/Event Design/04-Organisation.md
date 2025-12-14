@@ -12,32 +12,35 @@ Organisations are based on legal entities e.g. Company, Charitable Trust, non-re
 When changes to Organisations are made with regards to their status and facilities, this information is required by Te Whatu Ora, Accident Compensation Corporation and other organisations for a number of functions including management of contracts, payments and API credentialing. 
 
 The HPI Organisation NEMS event will enable subscription to HPI Organisation changes in real-time.
+
 # **Process view**
 Event process view:
-
+```mermaid
 flowchart LR
- 
     A["HIP"] --> B("HIP Publisher")
     B -- HIP Event ---> C["NEMS"]
     C -- HIP Event --> D["Subscriber1 Connector"] & E["Subscriber2 Connector"] & F["Subscriber3 Connector"]
 subgraph x["Subscriber Process"]
-  end 
-
-Death events and event data:
+  end
+```
+ 
+Organisation events and event data:
+```mermaid
 
 classDiagram
-  class Organisation{
-  <<Interface>>
-  organisationId
-  dormantOrganisationIDs
-  resourceVersion
-  }
-  class Created{
-  }
-  class Updated{
-  }
-  Organisation <|.. Created
-  Organisation <|.. Updated 
+  class Organisation{
+  <<Interface>>
+  organisationId
+  dormantOrganisationIDs
+  resourceVersion
+  }
+  class Created{
+  }
+  class Updated{
+  }
+  Organisation <|.. Created
+  Organisation <|.. Updated
+```
 
 
 # **Topic taxonomy**
