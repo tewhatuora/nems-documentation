@@ -19,7 +19,8 @@ Dependent multi-agency systems including Death Documents
 
 # **Process view**
 Practitioner event process view:
-
+ 
+```mermaid
 flowchart LR
  
     A["HIP"] --> B("HIP Publisher")
@@ -27,9 +28,10 @@ flowchart LR
     C -- HIP Event --> D["Subscriber1 Connector"] & E["Subscriber2 Connector"] & F["Subscriber3 Connector"]
 subgraph x["Subscriber Process"]
   end
-
+```
+ 
 Practitioner events and event data:
-
+```mermaid
 classDiagram
   class Practitioner{
   <<Interface>>
@@ -43,6 +45,7 @@ classDiagram
   }
   Practitioner <|.. Created
   Practitioner <|.. Updated
+```
 
 
 # **Topic taxonomy**
