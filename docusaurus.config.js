@@ -30,8 +30,8 @@ module.exports = async function createConfig() {
     // metadata like html lang. For example, if your site is Chinese, you may want
     // to replace "en" with "zh-Hans".
     i18n: {
-      defaultLocale: 'en-nz',
-      locales: ['en-nz'],
+      defaultLocale: 'en',
+      locales: ['en'],
     },
     presets: [
       [
