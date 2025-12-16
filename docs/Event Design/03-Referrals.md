@@ -48,77 +48,18 @@ For outreach referral task events, the topic taxonomy structure follows the over
 careadmin/servicerequest/outreachreferral/{verb}/v1/{code}/{actioned-by}/{request-status}
 ```
 
-### Styled Table:
+### Table:
 
-<table style="border-collapse: collapse; width: 100%;">
-<thead style="background-color:#006400; color:white;">
-<tr>
-<th>#</th>
-<th>Event Topic Field</th>
-<th>Field Type</th>
-<th>Value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background-color:#90EE90;">
-<td>1</td>
-<td>service-domain</td>
-<td>Root</td>
-<td>careadmin</td>
-<td>“careadmin” is the service domain of outreach referral request events</td>
-</tr>
-<tr style="background-color:#98FB98;">
-<td>2</td>
-<td>resource</td>
-<td>Root</td>
-<td>servicerequest</td>
-<td>Aligned with FHIR ServiceRequest resource</td>
-</tr>
-<tr style="background-color:#90EE90;">
-<td>3</td>
-<td>event category</td>
-<td>Root</td>
-<td>outreachreferral</td>
-<td>Event category (outreach referral)</td>
-</tr>
-<tr style="background-color:#98FB98;">
-<td>4</td>
-<td>verb (past tense)</td>
-<td>Root</td>
-<td>[created, claimed, updated, paused, resumed, revoked, completed]</td>
-<td>Event action, one of the values</td>
-</tr>
-<tr style="background-color:#90EE90;">
-<td>5</td>
-<td>version</td>
-<td>Root</td>
-<td>v1</td>
-<td>Starting version</td>
-</tr>
-<tr style="background-color:#98FB98;">
-<td>6</td>
-<td>code</td>
-<td>Event Property</td>
-<td>String value of intent code (e.g., “CervicalScreening”, “Immunization”, “BreastScreening”)</td>
-<td>Specifies the intent subject type. <a href="https://fhir-ig-uat.digital.health.nz/shared-care/ValueSet-hnz-task-code-valueset.html">FHIR ValueSet</a></td>
-</tr>
-<tr style="background-color:#90EE90;">
-<td>7</td>
-<td>actioned-by</td>
-<td>Event Property</td>
-<td>String value of service/system which caused the event action (e.g., “whaihua”, “csr”, “bsa”)</td>
-<td>The service/system took the action and caused this event.</td>
-</tr>
-<tr style="background-color:#98FB98;">
-<td>8</td>
-<td>service-request-status</td>
-<td>Event Property</td>
-<td>String value of the current status of the service request (e.g., “active”, “on-hold”, “completed”, “revoked”)</td>
-<td>The status of the service request after the action.</td>
-</tr>
-</tbody>
-</table>
+| # | Event Topic Field        | Field Type    | Value                                                                                                   | Description                                                                                                      |
+|---|---------------------------|--------------|---------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| 1 | service-domain           | Root         | careadmin                                                                                              | “careadmin” is the service domain of outreach referral request events                                           |
+| 2 | resource                 | Root         | servicerequest                                                                                        | Aligned with FHIR ServiceRequest resource                                                                        |
+| 3 | event category           | Root         | outreachreferral                                                                                      | Event category (outreach referral)                                                                               |
+| 4 | verb (past tense)        | Root         | [created, claimed, updated, paused, resumed, revoked, completed]                                      | Event action, one of the values                                                                                  |
+| 5 | version                  | Root         | v1                                                                                                     | Starting version                                                                                                  |
+| 6 | code                     | Event Property| String value of intent code (e.g., “CervicalScreening”, “Immunization”, “BreastScreening”)             | Specifies the intent subject type. [FHIR ValueSet](https://fhir-ig-uat.digital.health.nz/shared-care/ValueSet-hnz-task-code-valueset.html) |
+| 7 | actioned-by              | Event Property| String value of service/system which caused the event action (e.g., “whaihua”, “csr”, “bsa”)          | The service/system took the action and caused this event.                                                       |
+| 8 | service-request-status   | Event Property| String value of the current status of the service request (e.g., “active”, “on-hold”, “completed”, “revoked”) | The status of the service request after the action.                                                             |
 
 ---
 

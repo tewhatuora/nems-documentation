@@ -1,106 +1,155 @@
-# Outreach Referral Events (technical design)
-
-## Outreach Referral Events (technical design)
-
-This is a technical design document for Outreach Referral (OR) events. The target audiences are those working on OR task events publisher (FHIR Task Service), Placer and Filler service applications, and NEMS implementation of these task events.
-
+---
+title: "Practitioner Event Technical Design"
 ---
 
-## Background
 
-The Outreach Referral FHIR Task Service will be the central integration point to connect different services utilising the outreach capability by Whaihua. Together with the support of NEMS on task events, the FHIR workflow pattern H will be implemented to support the communications between the task placers and task fillers, see [Outreach Referral FHIR Task Solution Architecture Document](https://mohits.atlassian.net/wiki/spaces/FORT/pages/4073062700/Outreach+Referral+FHIR+Task+Solution+Architecture+Document).
+This a technical design document for HPI Practitioner NEMS event. The target audiences are those working on enrolment publisher application, enrolment subscriber applications, and NEMS implementation of HPI Practitioner events.  
 
----
+# **Background**
+Te Whatu Ora Health Identity Team maintains a register of practitioners that deliver health services, in the Health Provider Index system (HPI).
 
-## Process View
+Registered practitioners are assigned an HPI Common Person Number (CPN) based on information provided periodically from the 18 Responsible Authorities as legislated under the Health Practitioners Competence Assurance Act | Ministry of Health NZ. 
 
-Outreach Referral solution is based on the events triggered by the state changes of the outreach referral requests. These events will be routed to the interested parties to enable the system to react on the request state changes and initiate the adequate downstream process.
+When HPI CPNs are created, or changes to HPI CPNs are made with regards to their status, qualifications or personal details, this information is recorded in HPI.
 
-#### ServiceRequest state diagram:
+HPI practitioner current state information is required by
 
+Dependent Te Whatu Ora systems including Hospital Patient Administration Systems and DHB clinical systems.
+
+Dependent multi-agency systems including Death Documents
+
+# **Process view**
+Practitioner event process view:
+ 
+```mermaid
+flowchart LR
+ 
+    A["HIP"] --> B("HIP Publisher")
+    B -- HIP Event ---> C["NEMS"]
+    C -- HIP Event --> D["Subscriber1 Connector"] & E["Subscriber2 Connector"] & F["Subscriber3 Connector"]
+subgraph x["Subscriber Process"]
+  end
 ```
-@startuml
-active : The request is in force and ready to be acted upon.
-onHold : The request (and any implicit authorization to act) has been temporarily withdrawn but is expected to resume in the future.
-revoked : The request (and any implicit authorization to act) has been terminated prior to the known full completion of the intended actions. No further activity should occur.
-completed : The activity described by the request has been fully performed. No further activity will occur.
-[*] --> active : created
-active --> active : claimed
-active --> onHold : paused
-active --> revoked : revoked
-active --> active : updated
-active --> completed: complete
-onHold --> active : resumed
-onHold --> revoked : revoked
-onHold --> onHold : updated
-revoked --> [*]
-completed --> [*]
-@enduml
+ 
+Practitioner events and event data:
+```mermaid
+classDiagram
+  class Practitioner{
+  <<Interface>>
+  practitionerId
+  dormantPractitionerIDs
+  resourceVersion
+  }
+  class Created{
+  }
+  class Updated{
+  }
+  Practitioner <|.. Created
+  Practitioner <|.. Updated
 ```
 
----
 
-## Topic Taxonomy
+# **Topic taxonomy**
+For practitioner events, the topic taxonomy structure follows the overall topic taxonomy structure:
 
-For outreach referral task events, the topic taxonomy structure follows the overall topic taxonomy structure:
+service-domain/resource/event/verb/version/registration-authority
 
-```
-careadmin/servicerequest/outreachreferral/{verb}/v1/{code}/{actioned-by}/{request-status}
-```
+The topic fields are elaborated in the table below (with **dark-green** for root taxonomy; **light-green** for event property)
 
-### Table:
+|**Event Topic Field**|**Field Type**|**Value**|**Description**|
+| :- | :- | :- | :- |
+|service-domain|Root|“provideridentity”|“provider identity” is the service domain of facility events|
+|resource|Root|“practitioner”|The practitioner exposed by the HPI. This is the person who delivers healthcare or healthcare related services. The set of valid registration authority identifiers. [HPI Practitioner - New Zealand HPI Implementation Guide v1.4.10](https://hpi-ig.hip-uat.digital.health.nz/StructureDefinition-HPIPractitioner.html)  |
+|event category|Root|“practitioner”|The set of valid registration authority identifiers.|
+|verb|Root|created, updated|Event action, one of the values|
+|version|Root|“v1”|Starting version|
+|registration authority|Event Property|Registration Authority ID|The regulatory body responsible for the registration of health practitioners e.g. CH Chiropractic Board Register<br/> [RaIdentifier - HIP FHIR Common Terminology Guide v1.9.5](https://common-ig.hip.digital.health.nz/site/ValueSet-hpi-ra-identifier-1.0.html) <br/>Multiple events will be prompted where the practitioner is associated to multiple Registration Authorities|
 
-| # | Event Topic Field        | Field Type    | Value                                                                                                   | Description                                                                                                      |
-|---|---------------------------|--------------|---------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
-| 1 | service-domain           | Root         | careadmin                                                                                              | “careadmin” is the service domain of outreach referral request events                                           |
-| 2 | resource                 | Root         | servicerequest                                                                                        | Aligned with FHIR ServiceRequest resource                                                                        |
-| 3 | event category           | Root         | outreachreferral                                                                                      | Event category (outreach referral)                                                                               |
-| 4 | verb (past tense)        | Root         | [created, claimed, updated, paused, resumed, revoked, completed]                                      | Event action, one of the values                                                                                  |
-| 5 | version                  | Root         | v1                                                                                                     | Starting version                                                                                                  |
-| 6 | code                     | Event Property| String value of intent code (e.g., “CervicalScreening”, “Immunization”, “BreastScreening”)             | Specifies the intent subject type. [FHIR ValueSet](https://fhir-ig-uat.digital.health.nz/shared-care/ValueSet-hnz-task-code-valueset.html) |
-| 7 | actioned-by              | Event Property| String value of service/system which caused the event action (e.g., “whaihua”, “csr”, “bsa”)          | The service/system took the action and caused this event.                                                       |
-| 8 | service-request-status   | Event Property| String value of the current status of the service request (e.g., “active”, “on-hold”, “completed”, “revoked”) | The status of the service request after the action.                                                             |
 
----
+# **Message header (Event metadata)**
 
-## Message Header (Event Metadata)
+|**Header**|**Key Literal**|**Description**|**Required**|**Format/Values**|**Example**|
+| :- | :- | :- | :- | :- | :- |
+|ID|solace-user-property-id|Message id, unique for each publisher|Required|GUID correlation ID|987298dd-c484-462f-a15d-f18a97267959|
+|Source|solace-user-property-source|publisher URI reference|Required|[https://hip-uat.digital.health.nz](https://hip-uat.digital.health.nz/) for UAT [https://hip.digital.health.nz](https://hip.digital.health.nz/)  for prod| [https://hip-uat.digital.health.nz](https://hip-uat.digital.health.nz/) for UAT and [https://hip.digital.health.nz](https://hip.digital.health.nz/)  for prod|
+|Time|solace-user-property-time|UTC time when the message is published|Required|YYYY-MM-DDTHH:MM:SS|2023-11-30T18:54:43Z|
+|Spec Version|version|version of the CloudEvents spec|Optional|major.minor|1.0|
+|Type|solace-user-property-type|substring of the topic taxonomy including root to version|Required|\{root\}/\{version\}|demographics/patient/death/new/v1.0.0|
+|Subject|solace-user-property-subject|NHI number|Required|[A-Z]\{3\}([0-9]\{4\}|([0-9]\{2\}[A-Z]\{2\}))|ZZZ0008 ZXE24NV|
+|Content type|solace-user-property-datacontenttype or content-type for REST API|Content type of event data|Required|application/json|application/jso|
 
-| Header        | Key Literal                               | Description                                | Required | Format/Values                                                                                     | Example                                      |
-|--------------|-------------------------------------------|--------------------------------------------|----------|---------------------------------------------------------------------------------------------------|---------------------------------------------|
-| ID           | solace-user-property-id                  | Message id, unique for each publisher     | ★        | GUID correlation ID                                                                               | 987298dd-c484-462f-a15d-f18a97267959       |
-| Source       | solace-user-property-source              | Publisher URI reference                   | ★        | - [UAT](https://hip-uat.digital.health.nz/) <br/>- [Prod](https://hip.digital.health.nz/)         |                                             |
-| Time         | solace-user-property-time                | UTC time when the message is published    | ★        | YYYY-MM-DDTHH:MM:SS                                                                               | 2024-11-30T18:54:43Z                       |
-| Spec Version | version                                  | Version of the CloudEvents spec           | Optional | {major}.{minor}                                                                                   | 1.0                                         |
-| Type         | solace-user-property-type                | Substring of the topic taxonomy           | ★        | {root}/{version}                                                                                  | careadmin/servicerequest/outreachreferral/created/v1 |
-| Subject      | solace-user-property-subject             | ServiceRequest Id                         | ★        | servicerequest id                                                                                 | servicerequest id                           |
-| Content type | content-type / solace-user-property-datacontenttype | Content type of event data               | ★        | application/json                                                                                   | application/json                             |
 
----
+## Message payload
+HPI Practitioner ID
 
-## Message Payload
+Dormant HPI Practitioner IDs
 
-### ServiceRequest created
-**Schema:**
-```json
+Resource version
+## Event : Create
+
+**Payload Schema**
+
+~~~
 {
- "$schema": "https://json-schema.org/draft/2019-09/schema",
- "type": "object",
- "properties": {
-   "serviceRequestId": { "type": "string", "description": "ServiceRequest ID" },
-   "NHI": { "type": "string", "description": "NHI ID" },
-   "performer": { "type": "string", "description": "assigned performer display value" },
-   "eventTime": { "type": "string", "description": "time of eventing", "format": "date-time" }
- },
- "required": ["serviceRequestId", "NHI", "eventTime", "performer"]
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "type": "object",
+    "properties": {
+      "practitionerID": {
+        "type": "string",
+        "description": "Practitioner ID"     
+      },
+      "dormantPractitionerIDs": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Dormant Practitioner ID's"
+      },
+      "resourceVersion": {
+        "type": "string",
+        "description": "Resource Version"     
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "practitionerID",
+      "resourceVersion"
+    ]
 }
-```
+~~~
 
-**Example:**
-```json
+**Example**
+
+~~~
 {
- "serviceRequestId": "xyz1234",
- "NHI": "ZGT56KB",
- "eventTime": "2025-04-23T18:25:43.511Z",
- "performer": "air"
+ "practitionerID": "90ZZLP",
+ "dormantPractitionerIDs": ["80ZZLA"],
+ "resourceVersion": "1.4.10"
 }
-```
+~~~
+
+
+
+## Event : death/update
+
+**Payload Schema**
+
+As Above
+
+**Example**
+
+As Above
+
+
+## Event : updated
+
+**Payload Schema**
+
+~~~
+Same as above
+~~~
+
+**Example**
+~~~
+As above
+~~~
