@@ -1,4 +1,4 @@
-# Outreach Referral Events (technical design)
+# Outreach Referral Events
 
 ## Outreach Referral Events (technical design)
 
