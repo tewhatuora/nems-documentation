@@ -85,7 +85,7 @@ module.exports = async function createConfig() {
             // },
           },
           theme: {
-            customCss: [require.resolve('./src/css/custom.css'), require.resolve('@asyncapi/react-component/styles/default.min.css')],
+            customCss: [require.resolve('@asyncapi/react-component/styles/default.min.css')],
           },
           gtag: {
             trackingID: 'G-KPWKEMHLL1',
