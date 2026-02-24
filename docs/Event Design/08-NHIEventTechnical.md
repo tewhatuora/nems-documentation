@@ -52,7 +52,7 @@ The topic fields are elaborated in the table below
 | :-: | :-: | :-: | :-: |
 |service-domain|Root|“demographics”|Healthcare service domain|
 |resource|Root|“patient”|Aligned with FHIR EpisodeOfCare resource|
-|event category|Root|Address<BR/>Contact<br/>AgeGroup<BR/>Demographics<BR/>Linking<br/>Registration<BR/>Birth|Event Category|
+|event category|Root|Address<br/>Contact<br/>AgeGroup<br/>Demographics<br/>Linking<br/>Registration<br/>Birth|Event Category|
 |verb|Root|Variable: new, edit, delete|Event action, one of the values|
 |version|Root|“0.1.0”|Starting version|
 |District|Event Property|8 character code or "null" (lowercase)|Location of the district relating to the person’s primary residential address. [Code Tables](https://www.tewhatuora.govt.nz/our-health-system/data-and-statistics/nz-health-statistics/data-references/code-tables/)|
