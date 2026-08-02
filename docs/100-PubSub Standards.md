@@ -49,7 +49,7 @@ NEMS adheres to the AsyncAPI specification standard. The NEMS API (AsyncAPI) sha
 
 ## <a name="_toc168971890"></a>Authentication and authorisation
 
-Authentication and authorisation to use the NEMS platform is managed by the IdP (Identity Provider) integration within the Health NZ Azure AD (Microsoft Entra ID) team.
+Authentication and authorisation to use the NEMS platform is managed by the IdP (Identity Provider) integration with the Health NZ Keycloak platform.
 
 This authentication and authorisation is for all client application connections, including publishers and subscribers, as well as access (human & machine) to the platform portal for operational purposes.
 
