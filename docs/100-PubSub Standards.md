@@ -49,10 +49,6 @@ NEMS adheres to the AsyncAPI specification standard. The NEMS API (AsyncAPI) sha
 
 ## <a name="_toc168971890"></a>Authentication and authorisation
 
-Authentication and authorisation to use the NEMS platform is managed by the IdP (Identity Provider) using the Health NZ Keycloak platform for system integrations (and EntraID for platform user access).
-
-The Keycloak based authentication and authorisation is for all client application connections, including publishers and subscribers; human access to the platform management portal for operational purposes is managed by EntraID with SSO.
-
 The authentication and authorisation follows the OAuth2.0 standard with client credential flow for client applications; and OIDC standard for platform portal access (including the Solace and Solace Datadog instances).
 
 ## <a name="_toc168971891"></a>Protocols
