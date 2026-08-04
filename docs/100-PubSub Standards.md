@@ -45,7 +45,7 @@ The NEMS Standards are aimed at those considering, designing, developing, or pla
 
 ### <a name="_toc168971889"></a>AsyncAPI
 
-NEMS adheres to the AsyncAPI specification standard. The NEMS API (AsyncAPI) shall be published to the Digital Services Hub.
+NEMS adheres to the AsyncAPI specification standard. The NEMS API (AsyncAPI) shall be published to the [Digital Services Hub](https://www.healthnz.govt.nz/health-professionals/guidance-standards/topic/digital-technologies/digital-services-hub).
 
 ## <a name="_toc168971890"></a>Authentication and authorisation
 
@@ -76,21 +76,22 @@ Topic taxonomy represents the event topic hierarchies to deal with large event d
 
 See Topic Taxonomy
 
-## <a name="_toc168971894"></a>Message metadata
+## <a name="_toc168971894"></a>Message header
 
-NEMS message metadata adheres to the CloudEvents specification [Cloud Events Specification](https://cloudevents.io/).
+NEMS message header adheres to the CloudEvents specification [Cloud Events Specification](https://cloudevents.io/).
 
-For the Death Event, the message header specification is as follows: Death Event Message Header.
 
 ## <a name="_toc168971895"></a>Message payload
 
-The NEMS message payload should adhere to a ‘thin’ message principle, meaning limited details of the event content are contained in the notification payload. The payload, if any, should be in json format.
+NEMS event notifications should, wherever possible, follow the "thin message" principle, whereby the event payload contains only a minimal set of information about the event. Any payload content should be represented in JSON format.
 
-The event should consistently contain the minimum information and leverage obfuscation where necessary, especially for those events containing sensitive data. Event consumers should rely on the APIs of the event-producing services for data retrieval and enrichment, rather than the notification payload.
+Events should consistently include only the information required to identify and process the event, with sensitive data omitted where appropriate. Consumers should retrieve and enrich event data through the APIs provided by the originating service, rather than relying on information embedded within the event notification itself.
 
-As an example, for Death Event, the message payload includes deathDate and callbackUrl
+For example, a Death Event notification may contain only the deathDate and a callbackUrl, providing sufficient information for consumers to obtain additional details directly from the source system.
 
-For more details about death event message payload: Payload.
+However, there are scenarios where a "thick message" approach is more appropriate to meet business requirements. For instance, when publishing an immutable diagnostic report event and the publishing system does not provide an API to support callback-based retrieval, including the complete HL7 payload within the event message may be the preferred solution.
+
+Health New Zealand API standards provide the guideline on this specific topic: [Asynchronous Message Types](https://apistandards.digital.health.nz/api-development/Asynchronous%20APIs/MessageTypes/)
 
 ## <a name="_toc168971896"></a>Message delivery mode and order
 
