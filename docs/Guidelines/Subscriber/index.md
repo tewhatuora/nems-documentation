@@ -127,11 +127,19 @@ The diagram above shows a potential scenario where a message is received by the 
 
 ### Onboarding
 
-When a subscriber is onboarded to NEMS, it could be for an event for which data is already being received via other legacy mechanisms. The subscriber can also be onboarded to an event that has been live well before the subscriber has been onboarded. NEMS supports the ability to replay events for subscribers that join late. Event are replayed in the same order that they would have if the subscriber was connected at the beginning.
+Once a subscriber has been approved to onboard to NEMS, they may begin consuming events they currently receive through a legacy integration. 
 
-As a subscriber a decision needs to be made how you would like to receive the data. If the requirement is to retrieve historical events the subscriber application needs to manage the potential duplicates or cutover from your legacy integration.
+The subscriber can choose either to: 
 
-Historical messages will be delivered as one batch load. Depending on the volume of historical messages this could cause pressure on the downstream system, therefore precautions need to be put in place to ensure large traffic volumes are managed.
+receive events from an agreed point in time; or 
+
+receive historical events generated before their NEMS connection was established. 
+
+Where historical events are required, NEMS can replay them in the same sequence in which they were originally published. 
+
+The subscriber application must be able to identify and manage duplicate messages. Duplicates may occur where the same information has already been received through the legacy integration and is then replayed through NEMS. 
+
+Historical events are delivered as a single batch. Depending on the number of messages, the batch may create a significant increase in traffic and place additional load on the subscriber’s downstream systems. Appropriate controls must therefore be in place to manage the increased volume and reduce the risk of performance degradation or service disruption. 
 
 ### Security and privacy
 
