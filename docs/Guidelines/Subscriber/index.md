@@ -7,7 +7,7 @@ title: "Guidelines for Subscribers"
 
 ## Purpose
 
-This document provides guidelines and recommendations for designing and developing National Event Management Service (NEMS) subscriber applications. It also has key information to invite and facilitate design considerations during the subscriber application design and development processes.  
+TThis document provides guidance and recommendations for the design and development of National Event Management Service (NEMS) subscriber applications. It includes key information to support decision-making and promote effective design considerations throughout the subscriber application design, development, and implementation lifecycle.
 
 ## Audience
 
@@ -15,7 +15,7 @@ The target audience is primarily solution designers and application developers i
 
 ## Pre-reading
 
-The information of the NEMS key concepts, such as Event Driven Architecture, Event, and topic taxonomy, is provided in the NEMS Key Concepts document (--Reference link here--).
+The information of the NEMS key concepts, such as Event Driven Architecture, event, and topic taxonomy, is provided in the [NEMS Key Concepts document](/docs/Guidelines/).
 
 Understanding these concepts will form a good basis for designing your integration application as a NEMS subscriber.
 
@@ -77,7 +77,7 @@ In general, a message should only be acknowledged once the subscriber has comple
 Further guidance on acknowledgement and settlement patterns is provided in the Downstream Integration section.
 
 ### Topics and event filtering
-When designing a subscriber application, it is important to understand the topic taxonomy associated with the event types being consumed. The topic taxonomy defines how events are categorised and routed within NEMS and is documented in the relevant event specification and Event Catalogue. Each event type may have a different topic structure and filtering model.
+When designing a subscriber application, it is important to understand the topic taxonomy associated with the event types being consumed. The topic taxonomy defines how events are categorised and routed within NEMS and is documented in the relevant event specification and Event catalogue. Each event type may have a different topic structure and filtering model.
 
 NEMS uses topic-based filtering to control which events are delivered to subscribers. Filtering is performed using the topic taxonomy rather than the event payload, as NEMS does not inspect or process payload content during message routing. 
 
@@ -143,7 +143,7 @@ Subscriber solutions should be designed to address three key challenges:
 A recommended approach is to separate the solution into distinct processing layers or bounded contexts. By isolating event ingestion, event processing, and downstream integration responsibilities, subscribers can scale each component independently, protect critical backend systems, and better manage failures without impacting the overall event consumption capability.
 This architecture also enables buffering, throttling, retry handling, and workload management patterns to be introduced between components, helping ensure that downstream systems continue to operate reliably even during periods of elevated event activity.
 
-The diagram below illustrates a recommended integration pattern for separating event consumption from downstream processing and application integration.
+The diagram below illustrates a recommended integration pattern for separating event consumption from downstream processing and application integration:
 
 ![Integration Flow](Aspose.Words.a230c269-5841-48da-be40-0e37311f2712.003.png)
 
@@ -172,10 +172,11 @@ The message was received successfully but should not be processed.
 
 This outcome is typically used when:
 
-The event is not relevant to the subscriber.
-The message is invalid.
-Business rules prevent the message from being processed.
-Retrying the message will not resolve the issue.
+- The event is not relevant to the subscriber.
+- The message is invalid.
+- Business rules prevent the message from being processed.
+- Retrying the message will not resolve the issue.
+
 When a message is REJECTED, NEMS removes it from the subscriber queue.
 
 #### FAILED
@@ -279,9 +280,9 @@ System faults occur when a required component or dependency is unavailable, prev
 
 By designing clear strategies for invalid messages, business faults, and system faults, subscribers can improve the reliability, resilience, and maintainability of their event-driven integrations while ensuring that events are processed consistently and recoverably.
 
-### Disaster recovery and event replay
+### Disaster Recovery and Event Replay
 
-As a subscriber, your disaster recovery (DR) strategy should be designed to meet your Recovery Time Objective (RTO) and Recovery Point Objective (RPO), with a focus on restoring the systems and integrations that consume events from NEMS. For example, a downstream application may experience a failure and require restoration from backup before normal event processing can resume.
+As a subscriber, your disaster Recovery (DR) strategy should be designed to meet your Recovery Time Objective (RTO) and Recovery Point Objective (RPO), with a focus on restoring the systems and integrations that consume events from NEMS. For example, a downstream application may experience a failure and require restoration from backup before normal event processing can resume.
 
 NEMS supports subscriber recovery through its message replay capability, allowing event messages to be replayed in their original publication order. This capability can be used to recover missed or unprocessed events following a system outage or disaster.
 
