@@ -7,7 +7,7 @@ title: "Guidelines for Subscribers"
 
 ## Purpose
 
-TThis document provides guidance and recommendations for the design and development of National Event Management Service (NEMS) subscriber applications. It includes key information to support decision-making and promote effective design considerations throughout the subscriber application design, development, and implementation lifecycle.
+This document provides guidance and recommendations for the design and development of National Event Management Service (NEMS) subscriber applications. It includes key information to support decision-making and promote effective design considerations throughout the subscriber application design, development, and implementation lifecycle.
 
 ## Audience
 
