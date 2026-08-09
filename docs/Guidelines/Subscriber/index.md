@@ -282,7 +282,7 @@ By designing clear strategies for invalid messages, business faults, and system 
 
 ### Disaster Recovery and Event Replay
 
-As a subscriber, your disaster Recovery (DR) strategy should be designed to meet your Recovery Time Objective (RTO) and Recovery Point Objective (RPO), with a focus on restoring the systems and integrations that consume events from NEMS. For example, a downstream application may experience a failure and require restoration from backup before normal event processing can resume.
+As a subscriber, your Disaster Recovery (DR) strategy should be designed to meet your Recovery Time Objective (RTO) and Recovery Point Objective (RPO), with a focus on restoring the systems and integrations that consume events from NEMS. For example, a downstream application may experience a failure and require restoration from backup before normal event processing can resume.
 
 NEMS supports subscriber recovery through its message replay capability, allowing event messages to be replayed in their original publication order. This capability can be used to recover missed or unprocessed events following a system outage or disaster.
 
