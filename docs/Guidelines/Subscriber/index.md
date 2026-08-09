@@ -177,7 +177,7 @@ This outcome is typically used when:
 - Business rules prevent the message from being processed.
 - Retrying the message will not resolve the issue.
 
-When a message is REJECTED, NEMS removes it from the subscriber queue.
+When a message is **REJECTED**, NEMS removes it from the subscriber queue.
 
 #### FAILED
 The message could not be processed due to a temporary or recoverable error.
