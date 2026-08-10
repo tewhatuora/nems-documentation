@@ -7,51 +7,88 @@ title: "Guidelines for Subscribers"
 
 ## Purpose
 
-This document provides guidelines and recommendations for designing and developing National Event Management Service (NEMS) subscriber applications. It also has key information to invite and facilitate design considerations during the subscriber application design and development processes.  
+This document provides guidance and recommendations for the design and development of National Event Management Service (NEMS) subscriber applications. It includes key information to support decision-making and promote effective design considerations throughout the subscriber application design, development, and implementation lifecycle.
 
 ## Audience
 
 The target audience is primarily solution designers and application developers in organisations within the New Zealand health sector who are designing and developing solutions consuming national significant healthcare events from NEMS.
 
-## Pre-reading**
+## Pre-reading
 
-The information of the NEMS key concepts, such as Event Driven Architecture, Event, and topic taxonomy, is provided in the NEMS Key Concepts document (--Reference link here--).
+The information of the NEMS key concepts, such as Event Driven Architecture, event, and topic taxonomy, is provided in the [NEMS Key Concepts document](/docs/Guidelines/).
 
 Understanding these concepts will form a good basis for designing your integration application as a NEMS subscriber.
 
-## Design guidelines and considerations**
+## Design guidelines and considerations
 
 As a NEMS subscriber, your integration with NEMS will enable you to receive event messages from NEMS.
 
-NEMS is a cloud-based service that supports the event-driven architecture in the New Zealand health sector. It is a public service and is securely exposed to internet. It adheres and mandates a set of standards [link]
+NEMS is a cloud-based service that supports the event-driven architecture in the New Zealand health sector. It is a public service and is securely exposed to internet. It adheres and mandates a set of [standards](/docs/100-PubSub%20Standards.md).
 
 NEMS supports various protocols, programming languages and integration technologies for subscribers for integration with NEMS, e.g. Java, .net and MuleSoft are supported with reference implementations.
 
 ### Event message and data
 
-Event messages contain event data in their header and json based message payloads. You extract the data for further processing or integration with your systems.
+NEMS events notify subscribers that a business event has occurred. Depending on the event design, the message may contain either a minimal set of information (thin event) or a more complete representation of the business data (thick event).
+For thin events, subscribers are expected to retrieve additional information from the publisher through the APIs or interfaces specified in the event definition. For thick events, the required business data may be included directly within the event payload.
+
+Subscribers should always refer to the event specification to understand:
+
+- The business meaning of the event.
+- The event payload structure and format.
+Mandatory and optional fields.
+- Any callback or data retrieval requirements.
+
+NEMS provides reliable event transport but does not validate the business content of messages. Subscribers are responsible for validating incoming events and ensuring the data meets their business and technical requirements before processing.
+
+Subscribers should also include the following considerations when design their solutions:
+
+- Duplicate events.
+- Out-of-order event delivery.
+- Temporary failures when retrieving additional data.
+- Changes introduced through event versioning.
+
 
 ### Subscriber queue
 
-Typically, NEMS constructs one queue for each subscriber. Messages are routed to the subscriber’s queue according to the subscriptions. If a subscriber subscribes to different event types, messages of the subscribed event types (topics) will be routed to the same queue. The subscriber application needs to ensure there is logic that differentiates the events to process with appropriate downstream integrations.
+NEMS typically provisions a dedicated queue for each subscriber. Messages are routed to the subscriber's queue based on the configured topic subscriptions. Where a subscriber consumes multiple event types, events from all subscribed topics will be delivered to the same queue.
+
+Subscriber applications are therefore responsible for identifying and processing each event appropriately. This may involve routing events to different business processes, downstream systems, or handlers based on the event type, topic, or message metadata.
+
+Subscribers should design their solutions to support the processing of multiple event types from a single queue while maintaining clear separation of business logic for each event they consume.
 
 ### Event delivery
 
-NEMS guarantees delivery of messages and the order of the messages. This means a message will remain on your queue until you receive and **acknowledge** you received the message with “**ACCEPTED**” acknowledgement.
+NEMS provides guaranteed message delivery and message ordering for events delivered to a subscriber queue. A message remains on the queue until it has been successfully processed and acknowledged by the subscriber using an ACCEPTED settlement outcome.
 
-Once NEMS gets the acknowledgement, the message will be removed from the queue. In this way, NEMS guarantees the messages are well delivered.
+Once NEMS receives the ACCEPTED acknowledgement, the message is removed from the queue and will not be delivered again. This acknowledgement mechanism ensures that messages are not lost if a subscriber application becomes unavailable or encounters processing errors.
 
-NEMS is not supporting distributed transactions (XA) and will not propagating transaction context with current setup. You need to design your message acknowledgement settlement to deal with different scenarios of your message processing and downstream integrations.
+NEMS does not support distributed transactions (XA) and does not propagate transaction context between systems. As a result, subscribers are responsible for determining when a message should be acknowledged based on their own processing requirements and downstream integration patterns.
+Subscribers should carefully design their acknowledgement and settlement strategy to account for scenarios such as:
 
-We explain the acknowledgement and settlement further in the ‘Downstream integration’ section.
+- Successful message processing.
+- Temporary failures in downstream systems.
+- Message validation errors.
+- Retry and recovery requirements.
+- Duplicate message handling.
+
+In general, a message should only be acknowledged once the subscriber has completed the processing required to meet its business and operational requirements. This helps ensure that events are not lost if failures occur during downstream processing.
+
+Further guidance on acknowledgement and settlement patterns is provided in the Downstream Integration section.
 
 ### Topics and event filtering
+When designing a subscriber application, it is important to understand the topic taxonomy associated with the event types being consumed. The topic taxonomy defines how events are categorised and routed within NEMS and is documented in the relevant event specification and Event catalogue. Each event type may have a different topic structure and filtering model.
 
-When designing your subscriber client application, it is important you understand the topic taxonomy for the event you are subscribing to. The topic taxonomy is documented in the event documentation section. Each event type has different topic taxonomy. It is documented in the event type catalogue.
+NEMS uses topic-based filtering to control which events are delivered to subscribers. Filtering is performed using the topic taxonomy rather than the event payload, as NEMS does not inspect or process payload content during message routing. 
 
-As a subscriber, you can have specific event filtering based on the topic taxonomy for each event type. NEMS doesn’t support payload-based filtering since it does not unpack the payload in its data transfer. The filtering is configured and managed for you based on your eligibility and relevance. As part of the onboarding process, you can request a specific topic configuration to filter messages that are relevant for your organisation.
+Subscription filters are configured and managed as part of the subscriber onboarding process, based on business need, eligibility, and authorised access to the data.
 
-The NEMS topic taxonomy supports effective filtering capabilities, however there are instances where the event is of national significance, and it is difficult to target subscribers directly. It is important the subscriber understands the use cases when an event will be sent to them. If there is the possibility that an irrelevant event is sent to a subscriber, it is important the subscriber manages that event appropriately. They must discard any event not applicable to them to ensure compliance with privacy protections and data security.
+During onboarding, subscribers can request topic subscriptions that align with their business requirements, ensuring they receive only the event categories relevant to their organisation.
+While the NEMS topic taxonomy provides powerful filtering capabilities, some events are of broad or national significance and cannot always be precisely targeted to individual organisations. As a result, subscribers may occasionally receive events that are not relevant to their specific business processes.
+
+Subscribers are responsible for understanding the circumstances under which events are delivered and for implementing appropriate business rules to determine whether an event should be processed. Any event that is not relevant or authorised for use by the subscriber should be promptly discarded and must not be retained, processed, or disclosed beyond what is necessary to determine its applicability.
+
+Proper handling of irrelevant events is essential to maintaining compliance with privacy, security, and information governance requirements, and helps ensure that health information is only used for authorised purposes.
 
 ### Connectivity patterns
 
@@ -65,156 +102,228 @@ The NEMS platform supports a wide range of event-driven protocols. These protoco
 
 ![Subscriber Data Flow](Aspose.Words.a230c269-5841-48da-be40-0e37311f2712.001.png)
 
-We recommend and assume that you deploy your subscriber application behind a firewall. The firewall port needs to be open for outbound traffic, e.g. the subscriber client application must be able to reach the NEMS broker on port 55433. Messages are delivered through this connection. This applies to all the available NEMS environments you connect to, including the NEMS test and production environments.
-
-|**Source**|**Target**|**Port**|**Comments**|
-| :- | :- | :- | :- |
-|api.nems.digital.health.nz|Subscriber production|55443|JMS, SMF protocols|
-|api.test.nems.digital.health.nz|Subscriber non-production|55443|JMS, SMF protocols|
+We recommend and assume that you deploy your subscriber application behind a firewall. The firewall port needs to be open for outbound traffic, e.g. the subscriber client application must be able to reach the NEMS broker on specific port. Messages are delivered through this connection. This applies to all the available NEMS environments you connect to, including the NEMS test and production environments.
 
 NEMS is configured for maximum availability. It is deployed in a high-availability configuration with a disaster recovery in a remote data centre. Maintenance can occur on the brokers from time-to-time. Maintenance procedures will be applied in a rolling fashion. It is important that subscribers implement retry functionality if they don’t want to be disconnected during maintenance procedures. Given the connection mandates OAuth 2.0, the client application should reconnect when a node is switched. This should happen instantaneously, however during a disaster the outage could be prolonged as there are some manual steps put in place to confirm that the switch of data centres is justified. Availability will adhere to the service level agreement of the platform.
 
 ### Subscription patterns
 
-NEMS can support multiple subscription patterns, however, the default pattern subscribers should adopt is the publish/subscribe pattern. NEMS enhances the publish/subscribe model by guaranteeing the delivery of messages to a subscriber. In traditional publisher/subscriber pattern, subscribers must be connected to the topic at the time a message was published, otherwise they will not receive it. NEMS uses the concept of a topic, but to guarantee the delivery of that message, queues can subscribe to topics. The subscriber then connects to a dedicated queue guaranteeing delivery.
+NEMS supports several messaging patterns; however, the recommended approach for subscribers is the publish/subscribe model. NEMS extends the traditional publish/subscribe pattern by providing guaranteed message delivery, ensuring that events are not lost if a subscriber is temporarily unavailable.
+
+In a traditional publish/subscribe implementation, a subscriber must be actively connected to the topic when an event is published. If the subscriber is disconnected, the event will typically be missed. NEMS addresses this limitation by introducing durable queues that subscribe to topics on behalf of subscribers. Events published to a topic are stored on the subscriber's dedicated queue until they are successfully consumed and acknowledged.
+
+Subscribers connect to their dedicated queue rather than directly to the topic, enabling reliable event delivery and supporting temporary outages, maintenance activities, and application restarts.
 
 ![Guaranteed Delivery using a queue](Aspose.Words.a230c269-5841-48da-be40-0e37311f2712.002.png)
 
-In the diagram above, subscribers receive different events from a dedicated queue. Filtering and subscriptions are managed by NEMS based on the subscriber’s requirements and approval. Guaranteed delivery of messages ensures events are available if the subscriber application is disconnected voluntarily or involuntarily. It also enables the ability to replay messages in the event of a disaster. You could use this feature to have intermittent subscription connection if the timeliness of the messages is less critical to you. With this pattern, you will consume and process the events in a batch style, which could reduce the computing cost of your subscribing application or could support your specific use cases.
+In the example above, a subscriber receives events from a dedicated queue that may contain messages from one or more subscribed event types. Topic subscriptions and filtering rules are configured and managed by NEMS based on approved business requirements and access permissions.
+Guaranteed delivery provides several benefits:
+
+- Events remain available while the subscriber application is offline.
+- Messages are protected from temporary connectivity or application failures.
+- Historical messages can be replayed when required for recovery or disaster scenarios.
+- Subscribers can consume events at their own pace without risking message loss.
+
+This architecture also supports use cases where real-time processing is not required. For example, a subscriber may choose to connect periodically and process accumulated events in batches. This approach can reduce infrastructure and operational costs while still ensuring that all relevant events are received and processed reliably.
 
 ### Direct messaging
 
-If guaranteed delivery is not important, a subscriber can configure their client application to use direct messaging. This subscription pattern can be used if you require high throughput with dynamic data sets, e.g. current waiting list time. It is not critical to have a history of the waitlist as the next event will update the status.
+If guaranteed delivery is not important, a subscriber can configure their client application to use direct messaging. This subscription pattern can be used if you require high throughput with dynamic data sets, e.g. current waiting list time. It is not critical to have a history of the wait list as the next event will update the status.
 
 ### Downstream integrations
 
-When building your downstream integrations, it is important that you implement logic that will be supported by your backend systems. As a subscriber you don’t have control of the frequency an event can be published. There could be scenarios where the event velocity spikes, putting pressure on the downstream integration. When designing your downstream integrations, you need to address three problem statements:
+When designing downstream integrations, it is important to ensure that both the subscriber application and the systems it integrates with can support the expected event workload. As a subscriber, you do not control when or how frequently events are published. Event volumes may occasionally increase significantly, creating pressure on downstream processing and backend systems.
 
-- Make sure the integration code can scale to meet the volume of events.
-- Downstream applications need to be protected by the possibility of receiving large volumes of events.
-- Separate event processing logic with downstream integration logic.
+Subscriber solutions should be designed to address three key challenges:
 
-This can be achieved by segregating your integration flow into different bounded context as described in the diagram below.
+- **Scalability** – Ensure the event processing components can scale to handle varying event volumes and spikes in demand.
+- **Protection of downstream systems** – Prevent backend applications from being overwhelmed by bursts of incoming events.
+- **Separation of concerns** – Decouple event consumption and processing from downstream integration logic to improve resilience, maintainability, and recovery capabilities.
+
+A recommended approach is to separate the solution into distinct processing layers or bounded contexts. By isolating event ingestion, event processing, and downstream integration responsibilities, subscribers can scale each component independently, protect critical backend systems, and better manage failures without impacting the overall event consumption capability.
+This architecture also enables buffering, throttling, retry handling, and workload management patterns to be introduced between components, helping ensure that downstream systems continue to operate reliably even during periods of elevated event activity.
+
+The diagram below illustrates a recommended integration pattern for separating event consumption from downstream processing and application integration:
 
 ![Integration Flow](Aspose.Words.a230c269-5841-48da-be40-0e37311f2712.003.png)
 
-The subscriber client application should contain minimal logic. The recommendation is that it only reads from the NEMS broker and places it on some persistent store, like a locally managed queue. Putting complex validation routines in this part of the program could cause unintended consequences, e.g. velocity of messages is too great for backend systems causing mass failure. The subscriber may have to engage with the NEMS support team to resolve the issue. This could cause extended delays in processing that event, and in the worst-case scenario messages may be lost.  
+The subscriber client should be kept as lightweight as possible. Its primary responsibility should be to consume events from NEMS and persist them to a durable store, such as an internal queue, event log, or messaging platform for downstream processing.
 
-If possible, a microservice implementation is recommended to separate logic receiving of the event, from the downstream business logic. It also provides the flexibility to scale independently of each other. The downstream logic may need to be throttled to ensure the backend systems don’t get overwhelmed.
+Complex validation, transformation, and business processing should be avoided within the event consumption layer. Introducing significant processing logic at this point can reduce throughput and increase the risk of backlogs forming during periods of high event volume. In extreme cases, messages may accumulate faster than they can be processed, impacting subscriber performance and delaying the delivery of events to downstream systems.
+
+It is recommended that event ingestion be separated from business processing. A common approach is to implement a microservice architecture where one service is responsible for consuming and storing events, while separate services perform validation, transformation, enrichment, and downstream integration. This separation improves resilience, simplifies troubleshooting, and allows each component to be scaled independently according to its workload.
+
+Decoupling event consumption from downstream processing also enables subscribers to introduce buffering, retry mechanisms, and throttling controls. These capabilities help protect backend systems from sudden spikes in event volume and ensure that downstream applications can process events at a rate they can sustainably support.
+
+By keeping the subscriber client lightweight and separating responsibilities across bounded contexts, organisations can improve scalability, minimise operational risk, and maintain reliable event processing even during periods of increased demand.
 
 ### Acknowledgement settlements
+NEMS supports reliable event-driven integration through an acknowledgement and settlement model. Selecting the appropriate settlement outcome is critical to ensuring messages are processed correctly and not lost or unnecessarily replayed.
 
-NEMS is a service to support event-driven architecture. When receiving messages from NEMS it is important your client application acknowledges the NEMS broker appropriately to ensure there is no loss of data or service. NEMS has three types of acknowledgement settlements:
+NEMS supports three settlement outcomes:
 
-- **Accepted:** Sends an acknowledgement (ACK) back to NEMS informing the broker that the message was received successfully. NEMS will remove the message from the queue.
-- **Rejected:** Sends an acknowledgment (ACK) back to NEMS informing the broker that the message was received successfully but was rejected due to the event not being relevant to the subscriber. NEMS will remove the message from the queue.
+#### ACCEPTED
+The message has been successfully processed and no further action is required.
 
-  You should consider using **REJECTED** as a negative acknowledgement for** a message if the message received is not valid or can’t be processed. A rejected message will be removed from your queue.
+When a subscriber sends an **ACCEPTED** settlement, NEMS removes the message from the subscriber queue and it will not be delivered again.
 
-- **Failed:** Sends a negative acknowledgement (NACK) back to NEMS informing the broker that the subscriber could not process the message successfully. NEMS will not remove the message from the queue so the subscriber can replay the message.
+#### REJECTED
+The message was received successfully but should not be processed.
 
-  You should consider using **FAILED** as a negative acknowledgement for** a message if the message processing encountered a failure in your processing and you want to receive it again and reprocess the message. The ‘failed’ message will remain in front of the queue – make sure you take the necessary action so you don’t end up with an infinite loop when you “FAIL” a message.
+This outcome is typically used when:
 
-If the client application cannot or does not acknowledge an event, NEMS does not remove the message from the queue, and updates its status as being delivered. This means that when the subscriber application receives the message for the second time, it has a redelivery count greater than one.
+- The event is not relevant to the subscriber.
+- The message is invalid.
+- Business rules prevent the message from being processed.
+- Retrying the message will not resolve the issue.
 
-When designing your subscriber application, it’s important to understand the implications of what happens when no acknowledgement is made.
+When a message is **REJECTED**, NEMS removes it from the subscriber queue.
 
-![A diagram of a success
+#### FAILED
+The message could not be processed due to a temporary or recoverable error.
 
-Description automatically generated](Aspose.Words.a230c269-5841-48da-be40-0e37311f2712.004.png)
+This outcome is typically used when:
 
-The diagram above shows a potential scenario where a message is received by the downstream integration, but something fails in the subscriber client application trying to acknowledge receipt of the message. The message will remain on the NEMS broker. When the message is sent again it will be a duplicate for the subscriber as it was successfully processed by the downstream integration process.
+- A downstream system is unavailable.
+- A network or connectivity issue occurs.
+- Processing encounters a transient error.
+- Retrying the message may result in successful processing.
+
+When a message is **FAILED**, NEMS retains it on the queue and makes it available for redelivery.
+
+>**Important**: Messages that are repeatedly marked as **FAILED** may create a processing loop if the underlying issue is not resolved. Subscribers should implement appropriate monitoring, alerting, and recovery procedures.
+
+#### Unacknowledged Messages
+If a subscriber does not settle a message, NEMS retains the message on the queue and marks it as delivered. The message will be redelivered and its delivery count will increase.
+
+Subscribers should therefore design their solutions to tolerate duplicate message delivery.
+
+For example, a downstream business process may complete successfully, but the subscriber application may fail before sending an acknowledgement back to NEMS. Since NEMS has not received confirmation that processing completed, the message will be delivered again. From the subscriber's perspective, this results in a duplicate event.
+
+To minimise this risk, subscribers should:
+
+- Implement idempotent processing.
+- Carefully determine when messages should be settled.
+- Acknowledge messages only after the required business processing has completed successfully.
+
+As a general principle, a message should only be **ACCEPTED** when the subscriber is confident that it does not need to be processed again.
 
 ### Onboarding
 
-When a subscriber is onboarded to NEMS, it could be for an event for which data is already being received via other legacy mechanisms. The subscriber can also be onboarded to an event that has been live well before the subscriber has been onboarded. NEMS supports the ability to replay events for subscribers that join late. Event are replayed in the same order that they would have if the subscriber was connected at the beginning.
+Once a subscriber has been approved to onboard to NEMS, they may begin consuming events they currently receive through a legacy integration. 
 
-As a subscriber a decision needs to be made how you would like to receive the data. If the requirement is to retrieve historical events the subscriber application needs to manage the potential duplicates or cutover from your legacy integration.
+The subscriber can choose either to: 
 
-Historical messages will be delivered as one batch load. Depending on the volume of historical messages this could cause pressure on the downstream system, therefore precautions need to be put in place to ensure large traffic volumes are managed.
+- receive events from an agreed point in time; or 
+
+- receive historical events generated before their NEMS connection was established. 
+
+Where historical events are required, NEMS can replay them in the same sequence in which they were originally published. 
+
+The subscriber application must be able to identify and manage duplicate messages. Duplicates may occur where the same information has already been received through the legacy integration and is then replayed through NEMS. 
+
+Historical events are delivered as a single batch. Depending on the number of messages, the batch may create a significant increase in traffic and place additional load on the subscriber’s downstream systems. Appropriate controls must therefore be in place to manage the increased volume and reduce the risk of performance degradation or service disruption. 
 
 ### Security and privacy
+As a subscriber, you may receive sensitive health information that must only be used for its intended and authorised purpose. While NEMS and event publishers work together to minimise privacy risks through event design, topic filtering, and access controls, there may be situations where a subscriber receives an event that is not relevant to their organisation.
 
-As a subscriber you could receive sensitive information that needs to be managed for the purpose intended. NEMS will work with the publishers to try and mitigate any privacy breaches. In some cases, it will not be possible to mitigate situations where a subscriber will receive an event that is not intended for them, e.g. NHI number does not exist in subscriber’s backend system. It is important subscribers understand this situation and implement logic to discard any event that is not intended for them.
+For example, a subscriber may receive an event for an individual who does not exist in its local system or is otherwise outside its scope of responsibility. Subscribers must be prepared for these scenarios and implement appropriate business rules to identify and securely discard any event that is not applicable to them.
 
-NEMS ensures the data security and privacy protection when message/data transfers through NEMS. NEMS does not examine or validate the message, and all messages are encrypted in transfer.
+NEMS provides secure transport of events between publishers and subscribers. All communications with NEMS are encrypted in transit, and NEMS does not inspect, process, or validate the business content of event payloads. This design protects privacy while ensuring events can be transferred efficiently and securely.
 
-NEMS allows only authenticated secure connections from the subscriber applications. Network-wise, you can only connect to NEMS with TCPS as a subscriber.
+Subscriber applications can connect to NEMS only through authenticated and encrypted connections. NEMS supports secure TCPS connectivity and requires all subscriber applications to be explicitly authorised before access is granted.
 
-NEMS mandates the OAuth 2.0 client credential flow to secure its event-driven APIs (for both publishers and subscribers). This requires the use of a client ID and secret to acquire an authorisation token. It is important all credentials are managed and protected for all environments. This link provides guidance on how to manage secrets for your environment. [Secrets Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html)
+NEMS uses the OAuth 2.0 Client Credentials grant to secure event publishing and consumption. Subscriber applications must use approved client credentials to obtain access tokens before connecting to NEMS. Organisations are responsible for securely managing and protecting these credentials across all environments, including development, test, and production.
 
-Some of your use cases may require the subscriber application to call back to the source system to retrieve additional information about the event. These events may have been designed as a thin message (i.e. containing only resource identity) to protect privacy across the wire. If a message is intercepted maliciously, minimal data is contained in the message. The hacker would need the credentials to retrieve the full payload. As a subscriber, if the message is a thin event with a linked data source, you will also need to be granted access to the publisher's source API.  
+Credential management should follow established security practices, such as secure secret storage, controlled access, credential rotation, and audit monitoring. The OWASP Secrets Management Cheat Sheet provides useful guidance for protecting application secrets and credentials:
+[Secrets Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html)
 
-We recommend you ask your NEMS support person to work with your security team if you need security assistance.
+Some event types are intentionally designed as thin events, containing only the minimum information required to identify an event. Additional information can be obtained by calling a publisher-provided API or data service. This approach reduces the amount of sensitive information transmitted within event messages and limits the impact of any potential interception.
+
+Where callback or data retrieval APIs are used, subscribers must obtain the necessary authorisation from the publisher and comply with the publisher's security requirements. Access to NEMS does not automatically grant access to publisher-managed APIs or source systems.
+
+Subscribers should engage their organisational security teams and the NEMS team early in the onboarding process to ensure security, privacy, identity, and access management requirements are fully understood and implemented.
 
 ### Data retention
 
-As a subscriber, data retention should only be used for what the event is intended for. It is possible that a subscriber receives an event that is not intended for them. In this situation, the subscriber should ACK the messages to the NEMS broker to indicate the event has been successfully received. As part of the internal processing, it should be discarded with no additional processing performed on the message.
+As a subscriber, any retained data should be used only for the purpose intended by the event. In some cases, you may receive an event that is not relevant to your system or business process. When this occurs, the message should still be acknowledged (ACKed) to the NEMS broker to confirm successful receipt. The event should then be discarded as part of your internal processing, with no further handling or use of the message content.
 
-When a publisher sends a message to NEMS, they will provide header properties that allow developers to understand the content of the event without actually opening the payload. It is recommended headers are used by subscribers to determine whether the event should be discarded or not. Refer to the event documentation to understand the header configuration to implement this logic.
+When a publisher sends an event to NEMS, it includes message header properties that provide key information about the event without requiring the payload to be inspected. Subscribers should use these headers, where possible, to determine whether an event is relevant and should be processed or discarded. Refer to the event documentation for details of the available header properties and the recommended filtering logic.
 
-You should also pay attention to the logging and tracing of your subscribing application to ensure your compliance of security and privacy protection.
+Subscribers should also ensure that logging, monitoring, and tracing practices comply with applicable security, privacy, and data protection requirements. Care should be taken to prevent sensitive information from being unnecessarily captured or retained in application logs and diagnostic data.
 
 ### Monitoring and alerting
+The nature of Event Driven Architecture means that NEMS is responsible for the reliable delivery of event messages, after which responsibility transfers to the subscriber. This separation of responsibilities enables NEMS to meet its availability, scalability, and performance objectives. As a subscriber, you are responsible for monitoring your connectivity to NEMS, the health of your message processing components, and any downstream integrations required to meet your business requirements and Service Level Agreements (SLAs). Monitoring, alerting, and operational support should be considered key aspects of your overall integration architecture.
 
-The nature of Event Driven Architecture means that the NEMS responsibility ends with the event message delivery. This will meet the availability and scalability requirements. As a subscriber, you are responsible to monitor your connection to NEMS, the message processing, and your downstream integrations according to your business needs and Service Level Agreements (SLAs). When designing your subscriber client application, it is important that monitoring and alerting are taken into consideration of your overall integration architecture.
-
-It’s also important that effective logging is in place to help issue analysis and diagnostics. The event header supplies an event ID and a source. These fields can be used to trace the message back to the original publisher. NEMS also provides a header property Replication Group ID.
+Effective logging and tracing are also essential for operational support, troubleshooting, and auditability. Event messages include header properties such as the Event ID and Source, which can be used to track a message throughout its lifecycle and identify the originating publisher. NEMS also provides a Replication Group Message ID, which can assist with message tracing, correlation, and diagnostic investigations. These identifiers should be captured in application logs and monitoring tools to support efficient issue analysis and resolution.
 
 ### Error handling
 
-Error management in Event Driven Architecture requires some thorough design to address what to do when an event occurs. As all the processing occurs in the background, it is the subscriber client application that makes the decision what to do when an event occurs. This is different to GUI (Graphical User Interface) applications where errors can be presented to a screen and the user manages the error.
+Error management is a critical aspect of Event Driven Architecture and requires careful design. Because event processing occurs asynchronously and without direct user interaction, the subscriber application is responsible for determining how errors are handled when they occur. This differs from traditional graphical user interface (GUI) applications, where errors can be presented to users for immediate resolution.
 
-As discussed in the ‘Downstream integrations’ section, the recommendation is to separate the receiving of the event with the process of the event, using a microservice approach. This architecture also becomes helpful when managing errors. Whether you adopt a microservice approach or not, the logic to receive an event should not fail due to a business fault. The first part of the subscriber application should be to place it on persistent storage. That way the only real possibility of the receiving process failing is if the persistent storage is down. In this scenario NEMS manages the fault for the subscriber. The event will remain on the NEMS broker until the subscriber ACKs the message.
+As discussed in the Downstream Integrations section, a recommended approach is to separate event ingestion from business processing, typically through a microservice-based architecture. This pattern not only improves scalability and resilience but also simplifies error handling. Regardless of the architecture adopted, the event consumption component should be designed to avoid failures caused by business processing issues. Its primary responsibility should be to receive the event and persist it to reliable storage. This ensures that business processing can occur independently and that message receipt remains resilient. In this model, the most significant failure scenario is the loss of the persistent storage service. If this occurs, NEMS will continue to retain the message until it is successfully acknowledged (ACKed) by the subscriber.
 
-Managing downstream errors will differ for each subscriber and every event due to the required business logic to load the data into their backend systems. Regardless of the business logic required, you may want to think about the following use cases when designing a subscriber client application:
+The management of downstream processing errors will vary depending on the subscriber’s business requirements and the systems involved. However, when designing a subscriber solution, it is important to consider how the following categories of errors will be handled:
+- Invalid or malformed messages
+- Business faults
+- System faults
 
-- invalid/malformed messages
-- business faults
-- system faults.
 
-The publisher is committed to publishing valid formatted messages. Their error routines should stop any messages from being published if they are invalid, but this cannot be guaranteed. Therefore, when deciding how to manage an invalid message, the subscriber needs to decide whether they want to notify the publisher of the fault or just discard the message. If the decision is to notify the publisher, how does that information get captured so the error can be walked through?
+#### Invalid or Malformed Messages
+Publishers are expected to validate messages before they are published to NEMS. While this significantly reduces the likelihood of invalid events being distributed, subscribers should not assume that all received messages are valid. Subscriber solutions should include processes to detect malformed or invalid messages and define an appropriate handling strategy. This may involve discarding the message, quarantining it for analysis, or notifying the publisher so corrective action can be taken. Consider how such faults will be identified, recorded, and tracked to support investigation and resolution.
 
-Business faults are the most complex in nature as they can occur for any number of reasons. In most situations, business faults will need to be analysed. Therefore, when managing business faults do you pause processing until that message has been processed, or do you continue and move the event to the side so the issue can be managed out of process? Implementing event-driven principles can provide the tooling to achieve the desired outcomes easily.
+#### Business Faults
+Business faults occur when an event is technically valid but cannot be processed because of business rules or data conditions within the subscriber’s environment. These faults are often the most complex to manage and typically require investigation or manual intervention. Subscriber solutions should determine whether processing should pause until the issue is resolved or whether the affected event should be isolated and moved to a separate workflow while other events continue to be processed. Event-driven architectures provide flexibility to implement patterns such as dead-letter queues, exception queues, or compensation processes to support these scenarios.
 
-System faults are generally black and white. Something in the process is down so cannot complete the task. If that service was available, the process would be completed successfully. System faults can affect every event, therefore continuing processing when a system fault occurs will only expedite the issue. The recommendation for system errors is to stop processing to limit the potential cleanup that could occur. If possible, implement an automated backoff process that will automatically resolve the issue without human intervention. In this scenario, there is no need to move the event from the persistent store, it can sit there waiting for the system fault to be resolved.
+#### System Faults
+System faults occur when a required component or dependency is unavailable, preventing successful processing of the event. Examples include database outages, network failures, or unavailable downstream services. Unlike business faults, system faults typically affect all events and are unlikely to be resolved through repeated immediate retries. In these circumstances, the recommended approach is to temporarily suspend processing to prevent the accumulation of additional failures and reduce recovery effort. Where possible, automated retry and backoff mechanisms should be implemented to allow recovery without manual intervention. Events can remain safely stored in the persistent processing layer until the underlying issue has been resolved and normal processing can resume.
 
-### Disaster recovery and event replay
+By designing clear strategies for invalid messages, business faults, and system faults, subscribers can improve the reliability, resilience, and maintainability of their event-driven integrations while ensuring that events are processed consistently and recoverably.
 
-As a subscriber, the disaster recovery process should be considered according to your Recovery Time Objective (RTO) and Recovery Point Objective (RPO), with a view to recovering your system integrated with NEMS. An example could be that a downstream application failed and needs to be restored from backup.
+### Disaster Recovery and Event Replay
 
-NEMS supports your recovery by being able to replay event messages with original order.
+As a subscriber, your Disaster Recovery (DR) strategy should be designed to meet your Recovery Time Objective (RTO) and Recovery Point Objective (RPO), with a focus on restoring the systems and integrations that consume events from NEMS. For example, a downstream application may experience a failure and require restoration from backup before normal event processing can resume.
 
-If the decision is made to implement a robust process to allow the replay of messages, it is important to understand that NEMS will replay the events in the same order they were originally processed. The message replay could be based on the following criteria:
+NEMS supports subscriber recovery through its message replay capability, allowing event messages to be replayed in their original publication order. This capability can be used to recover missed or unprocessed events following a system outage or disaster.
 
-- From the beginning (caveat. is that replay logs get purged over time so will only replay what has not been purged).
-- From a point in time.
-- From a Replication Group Id.
+If you choose to incorporate message replay into your disaster recovery processes, it is important to understand that replayed events are delivered in the same sequence as they were originally published. Replay requests can be initiated using one of the following starting points:
 
-Implementing a mechanism to trace what events have been processed or received could be a simple reduced risk solution that can meet your needs for a disaster recovery. In the event of a disaster, you can refer to the traces to identify the last message received before the disaster happened. The subscriber can then request a replay from that moment. If the trace also records the Replication Group Id, that can be used as the starting point for the replay.
+- From the beginning of the available replay log (subject to replay log retention policies).
+- From a specified point in time.
+- From a specific Replication Group Message ID.
 
-You could choose to replay message systematically via the NEMS API and build it into your application; or you could make the replay message a manual process as part of your operation. NEMS provides the capability and flexibility to design your Disaster Recovery (DR) process and ensure the business continuity.
+A simple and effective recovery approach is to maintain traceability of processed or received events. By recording key identifiers, such as the Event ID and Replication Group Message ID, subscribers can determine the last successfully processed event before an outage occurred. Following recovery, a replay can be requested from the appropriate point, reducing the risk of data loss and simplifying reconciliation activities.
 
-NEMS guarantees no loss of data in the event of its own disaster, which means the RPO of NEMS is ZERO. If NEMS experiences a catastrophic event, all connections to the broker will be lost. The NEMS team will evaluate the situation and make a quick decision to switch to the secondary site or resolve the issue in place. From a subscriber perspective, no changes need to be made to the client application. Once the service has been restored, processing will continue. Refer to the ‘Acknowledgement’ section to understand how to manage events that could have been processed to backend systems but failed to send a successful ACK back to NEMS.
+Replay functionality can be incorporated directly into subscriber applications through automated processes, or managed as an operational procedure triggered when required. NEMS provides the flexibility to support a range of disaster recovery approaches, enabling subscribers to implement a solution that aligns with their business continuity requirements.
+
+NEMS is designed to provide resilient event delivery and ensures that no event data is lost in the event of a NEMS platform failure. As a result, the NEMS platform has an RPO of zero. If NEMS experiences a major service disruption, subscriber connections to the broker will be interrupted. The NEMS operations team will assess the situation and either restore service or fail over to the secondary environment as appropriate.
+
+From a subscriber perspective, no application changes are required during a NEMS failover event. Once connectivity is restored, event processing can resume automatically. However, subscribers should ensure their applications can handle scenarios where an event has been successfully processed by a downstream system but the acknowledgement (ACK) was not successfully returned to NEMS. Refer to the Acknowledgement section for guidance on designing idempotent processing and managing potential message redelivery following recovery events.
 
 ### Testing
 
-NEMS recommends subscribers consider at least two types of tests before releasing to production:
+NEMS recommends that subscribers perform testing at multiple levels before deploying solutions to production. At a minimum, subscribers should complete:
 
-1. Test with NEMS test environment.
-2. Test with mocked events.
+1. End-to-end testing using the NEMS test environment.
+1. System and integration testing using mock events.
 
-The NEMS test environment will produce simulated messages on a regular interval so subscribers can perform their end-to-end testing. It is important to note that the publishing system may not have the data or test scenarios to support a complete end-to-end test where data is received from NEMS and loaded into the subscriber's backend system. E.g. the identity in the message might not support your callback process to retrieve additional data in your integration.
+The NEMS test environment can generate simulated event messages at regular intervals, enabling subscribers to validate connectivity, message consumption, and end-to-end integration flows. However, subscribers should be aware that publishing systems in test environments may not always contain the data, scenarios, or supporting records required for comprehensive business testing. For example, identifiers contained within an event may not support downstream processes that retrieve additional information from external systems.
 
-NEMS also provides the ability to have mock events which allow subscribers to implement system tests to ensure the downstream integration logic is fit for production. You could use the mock events to for different purposes. E.g
+To complement end-to-end testing, NEMS provides mock event examples that allow subscribers to validate their application logic independently of the NEMS platform. These mock events can be used to verify that subscriber solutions are production-ready and can correctly handle a range of operational and business scenarios.
 
-- Process invalid/malformed events.
-- Run stress/load/performance tests.
-- Business logic assertion.
+Typical uses for mock events include:
 
-NEMS provides simple test units that replicate a NEMS message. As a subscriber you can use these examples to build your test scenarios, e.g. message volume, or error management. These test units can be used without being onboarded to the NEMS platform. It is recommended the system testing is completed to satisfaction before progressing to end-to-end testing.
+- Validating the handling of invalid or malformed messages.
+- Testing error management and recovery processes.
+- Verifying business rule processing and expected outcomes.
+- Performing stress, load, and performance testing.
+- Confirming message ordering and processing behaviour under different volumes.
 
-##Traceability and Audit
+NEMS provides sample test messages that replicate the structure and format of production events. Subscribers can use these examples to develop automated test suites, simulate message volumes, and validate resilience and error-handling capabilities. These test assets can be used before onboarding to the NEMS platform, allowing development and system testing to begin early in the delivery lifecycle.
+
+It is recommended that system and integration testing using mock events is completed successfully before progressing to end-to-end testing within the NEMS environment. This approach helps identify and resolve issues earlier, reduces onboarding risk, and provides greater confidence that the subscriber solution will operate reliably in production.
+
+### Traceability and Audit
 
 To satisfy the end to end traceability requirements, the subscribers must record the event information upon receiving and discarding event messages. A subscriber must 
 - record the `messageId`, `messageSubjectId` and `timestamp` in the logs (or traces) if messageSubjectId is NOT NHI
