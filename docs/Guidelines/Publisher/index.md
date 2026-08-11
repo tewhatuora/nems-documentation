@@ -6,7 +6,7 @@ title: "Guidelines for Publishers"
 
 ## Purpose
 
-This document provides information, guidelines, and recommendations to support National Event Management Service (NEMS) publishers to design the integration solution with NEMS.
+This document provides information, guidance, and recommendations to help publishers design and implement their integration with the National Event Management Service (NEMS).
 
 ## Audience
 
@@ -14,7 +14,7 @@ The target audience for this guideline document is primarily solution designers 
 
 ## Prereading
 
-Information on key NEMS concepts, including Event-Driven Architecture (EDA), events, and topic taxonomy, is available in the NEMS Key Concepts document (reference link). A sound understanding of these concepts is essential for designing and publishing events within the NEMS ecosystem.
+A sound understanding of key NEMS concepts, including Event-Driven Architecture (EDA), events, and topic taxonomy, is essential for designing and publishing events within the NEMS ecosystem.
 
 It is assumed that readers are familiar with the applicable NEMS policies, standards, and governance documents. These documents define the principles, requirements, and constraints that publishers must adhere to when designing event schemas, structuring topics, protecting sensitive information, and publishing events to NEMS.
 
@@ -37,7 +37,8 @@ An ideal NEMS event typically exhibits the following characteristics:
 - **Well-defined business semantics**, representing a meaningful business event rather than a technical system event.
 - **Significant impact** on subscribing systems, workflows, or business processes.
 
-For example, a patient enrolment transfer event aligns well with these characteristics. When a patient transfers from one general practice to another, the previous practice requires timely notification so that it can update its records and cease services that are no longer required, such as repeat prescription communications.
+For example, a patient enrolment transfer event aligns well with these characteristics. When a patient transfers from one general practice to another, the previous practice requires timely notification so that it can update its records and cease services that are no longer required, such as scheduled screening calls.
+
 Organisations intending to publish new events to NEMS should engage with the NEMS team as early as possible in the design process. Early engagement helps ensure a clear understanding of NEMS policies, standards, and architectural requirements, and enables any impacts to the solution design, event model, security approach, or integration architecture to be identified and addressed before development begins.
 
 ## Event topics
@@ -61,7 +62,7 @@ The connectivity pattern you choose will not impact the authentication mechanism
 
 As an example for the on-demand connectivity, a publisher could implement protocols like REST to connect to NEMS, publishes an event message with Post request, and then close the connection after receiving a 200 response.Network connections
 
-NEMS provides REST and tcps publishing endpoints. As a publisher, you are responsible for ensuring the network connectivity from your systems to the NEMS environment.
+NEMS provides REST and TCPS publishing endpoints. As a publisher, you are responsible for ensuring the network connectivity from your systems to the NEMS environment.
 
 ## Publishing patterns
 
@@ -82,15 +83,29 @@ NEMS recommends the real-time publishing pattern over batch publishing as the fo
 
 ## Security and privacy
 
-NEMS mandates the OAuth 2.0 authentication and authorisation standard to secure its event-driven APIs. The OAuth Client Credential flow will be used to authenticate the publisher’s connectivity with centralised IdP (identity Provider). It is publisher’s responsibility to securely store and manage all keys and secrets.
+NEMS mandates the OAuth 2.0 authentication and authorisation standard to secure its event-driven APIs. The OAuth Client Credential flow will be used to authenticate the publisher’s connectivity with centralised IdP (identity Provider). It is the publisher’s responsibility to securely store and manage all keys and secrets.
 
-NEMS is a cloud-based service and provides access and interoperability based on internet protocols. All communications are secured. Data transfers between all systems are encrypted. Data in transition in NEMS is encrypted. Message payload is never decrypted in NEMS for security and data protection reasons.
+NEMS is a cloud-based service that enables secure access and interoperability using standard internet protocols. All communications are secured, and data transfers between systems are encrypted. Data remains encrypted while in transit through NEMS, and message payloads are never unpacked by NEMS, ensuring the confidentiality, security, and protection of information.
 
-As a publisher, you have full control of what information goes into event messages. The data held within your messages, whether they are in the message headers or message payload, may contain sensitive information. As a publisher you will not always know who your event messages will be sent to and how the message data will be used. You could weigh the following protection mechanism to protect the data according to the data sensitivity:
+As a publisher, you have full control over the information included in event messages. Data contained within message headers and payloads may include sensitive information. Because publishers are not always aware of all current or future subscribers, they may not know who will receive the event data or how it will be used.
 
-- consider thin event: include insensitive identification information of your event in the event message, and require the subscriber to retrieve more information from one or more services (through their APIs).
-- Publish minimum but sufficient data and consider how your subscribers might process events to reduce the mandate of the subscriber to do additional API call. Please note, these API calls might cause extra load and stress to your systems.
-- Avoid adding sensitive data into topic taxonomy, especially if you are publishing using the REST endpoint. The topic taxonomy is a part of your publishing API URL.
+Publishers should therefore assess the sensitivity of the data being shared and apply appropriate protection mechanisms. Consider the following recommendations when designing event messages:
+
+### Consider Using a Thin Event Pattern
+
+A thin event contains only non-sensitive information needed to identify the event, such as identifiers or key metadata. Subscribers can then retrieve additional details from one or more services through APIs.
+
+Thin events can help reduce the amount of sensitive information distributed through NEMS. However, publishers should balance data minimisation with usability. Providing too little information may require subscribers to make additional API calls to retrieve the data they need, potentially increasing latency and creating additional load on publisher systems.
+
+### Publish Only the Data Required
+
+Publish the minimum amount of data necessary for subscribers to understand and process the event. Consider how subscribers are expected to consume the event and include sufficient context to avoid unnecessary follow-up requests where appropriate.
+
+### Protect Sensitive Information in the Topic Taxonomy
+
+Avoid including sensitive or confidential information in the topic taxonomy. This is particularly important when publishing through the NEMS REST endpoint, as the topic taxonomy forms part of the publishing API URL. Information included in URLs may be exposed through logs, monitoring tools, diagnostics, and other operational systems.
+
+Careful consideration of event content, topic design, and data minimisation techniques can help protect sensitive information while maintaining efficient and effective event-driven integrations.
 
 The diagram below represents a possible data flow for a thin event where the subscriber performs an API callback against the publisher’s service API. To achieve the highest level of interoperability Fast Healthcare Interoperability Resources (FHIR) is the recommended standard to use when exposing such an API.
 
@@ -122,11 +137,11 @@ NEMS is responsible for operating and maintaining the event platform, including 
 
 Publishers are responsible for managing errors that occur during the publication of events to NEMS. If an event cannot be successfully published to the NEMS broker, the publisher must implement appropriate retry and recovery mechanisms to ensure the event is eventually delivered.
 
-An event should only be considered successfully published once it has been accepted and acknowledged by the NEMS broker. Until that acknowledgement is received, the event has not entered the NEMS ecosystem and remains the responsibility of the publisher. As a result, publishers should design their solutions to support reliable event delivery through retry, persistence, and failure recovery processes.
+An event should only be considered successfully published once it has been accepted and acknowledged by the NEMS broker. Until that acknowledgement is received, the event has not entered the NEMS and remains the responsibility of the publisher. As a result, publishers should design their solutions to support reliable event delivery through retry, persistence, and failure recovery processes.
 
 It is recommended that publishers separate the business logic responsible for generating an event from the logic responsible for sending the event to NEMS. This architectural pattern improves resilience by allowing event publication failures to be handled independently of the upstream business process. The publisher application should first construct and validate the event to ensure it conforms to the NEMS event specification before submitting it for delivery.
 
-NEMS performs only limited validation of incoming messages. Provided the client is correctly configured to use the approved protocol and can successfully connect to the NEMS broker, the message will generally be accepted and acknowledged. To minimise performance overhead and reduce exposure to sensitive information, NEMS does not validate event payload content or verify that required business headers are populated.
+NEMS performs only limited validation of incoming messages. Provided the publishing client application is correctly configured to use the approved protocol and can successfully connect to the NEMS broker, the message will generally be accepted and acknowledged. To minimise performance overhead and reduce exposure to sensitive information, NEMS does not validate event payload content or verify that required business headers are populated.
 
 Therefore, publishers are responsible for ensuring that:
 
@@ -190,7 +205,7 @@ NEMS is designed to provide a highly available and resilient event platform, inc
 
 Publishers are not required to implement any NEMS-specific disaster recovery procedures beyond standard integration resilience and error-handling practices. During a disaster recovery event, the NEMS service may be temporarily unavailable while failover or recovery activities are performed. During this period, publisher applications may experience connectivity issues or message publication failures.
 
-Publishers should be designed to tolerate these transient failures by implementing appropriate retry, reconnection, and recovery mechanisms. Once the NEMS platform has been restored, publisher applications should automatically reconnect and resume event publication without manual intervention.
+Publishers should design to tolerate these transient failures by implementing appropriate retry, reconnection, and recovery mechanisms. Once the NEMS platform has been restored, publisher applications should automatically reconnect and resume event publication without manual intervention.
 
 Although NEMS provides platform-level disaster recovery capabilities, publishers remain responsible for ensuring the resilience of their own systems and business processes. Failure within publisher-managed applications, infrastructure, or data stores can result in lost or duplicated events if appropriate safeguards are not implemented.
 
