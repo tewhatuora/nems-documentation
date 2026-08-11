@@ -14,7 +14,7 @@ The target audience for this guideline document is primarily solution designers 
 
 ## Prereading
 
-A sound understanding of key NEMS concepts, including Event-Driven Architecture (EDA), events, and topic taxonomy, is essential for designing and publishing events within the NEMS ecosystem.
+A sound understanding of key NEMS concepts, including Event-Driven Architecture (EDA), events, and topic taxonomy, is essential for designing and publishing events with NEMS.
 
 It is assumed that readers are familiar with the applicable NEMS policies, standards, and governance documents. These documents define the principles, requirements, and constraints that publishers must adhere to when designing event schemas, structuring topics, protecting sensitive information, and publishing events to NEMS.
 
@@ -22,7 +22,7 @@ Publishers should review these documents before commencing solution design to en
 
 ## Design guidelines and considerations
 
-NEMS is the national platform for enabling Event-Driven Architecture (EDA) within the New Zealand health ecosystem. It facilitates the secure and reliable exchange of events between systems, reducing point-to-point dependencies and promoting loose coupling, agility, and reuse across health services.
+NEMS is the national platform for enabling Event-Driven Architecture (EDA) within the New Zealand health sector. It facilitates the secure and reliable exchange of events between systems, reducing point-to-point dependencies and promoting loose coupling, agility, and reuse across health services.
 
 As a cloud-based service, NEMS provides a standardised integration capability that enables connected systems to publish and consume events over the internet. The platform supports a broad range of security standards, messaging protocols, and development technologies, allowing organisations to adopt event-driven integration patterns while maintaining interoperability and compliance with Health NZ standards.
 
@@ -66,7 +66,7 @@ NEMS provides REST and TCPS publishing endpoints. As a publisher, you are respon
 
 ## Publishing patterns
 
-The publishing patterns are simplified with NEMS. Currently the default publishing pattern for NEMS is the publisher-subscriber pattern. As a publisher, the subscribers are agnostic to you. It is the publisher’s responsibility to ensure the events have been received by NEMS and NEMS manages the delivery of the events to the subscribers.
+NEMS simplifies event publishing by using a standard publisher-subscriber pattern. Publishers do not need to know who their subscribers are, as subscribers remain decoupled and independent from the publisher. A publisher's responsibility is to ensure that events are successfully delivered to NEMS. Once received, NEMS manages the distribution and delivery of those events to the appropriate subscribers.
 
 Based on your use cases and the nature of your events, you have the option to publish your events either triggered by the real-time business event, or in a batch by group of events.
 
