@@ -20,20 +20,13 @@ Initially, you will receive this information for the NEMS test broker. This envi
 
 ## Configure your network
 
-The NEMS event broker is publicly available and requires an internet connection to be accessible to the NEMS to publish to the NEMS event broker. You can choose a TCP connection to use the native messaging protocols or publish to the NEMS REST endpoint. For this the following target servers and ports are required.
-
-|**Protocol**|**Source**|**Target**|**Connection**|
-| :-: | :- | :- | :- |
-|Native|NEMS production environment |api.nems.digital.health.nz|TCP 55443|
-|Native|NEMS test environment|api.test.nems.digital.health.nz|TCP 55443|
-|REST|NEMS production environment|api.nems.digital.health.nz|HTTP 9443|
-|REST|NEMS test environment|api.test.nems.digital.health.nz|HTTP 9443|
+The NEMS event broker is publicly available and requires an internet connection to be accessible to the NEMS to publish to the NEMS event broker. You can choose a TCP connection to use the native messaging protocols or publish to the NEMS REST endpoint. Details of the NEMS server connectivity will be provided to you once the onboarding is approved.
 
 ## Connect and authenticate
 
 The NEMS Publisher application will connect, authenticate, and publish the event messages. It will require the NEMS connection information provided as part of the NEMS application process.
 
-## Obtaining the ID and access tokens
+### Obtaining the ID and access tokens
 
 Publishers need to authenticate the publishing application to connect to NEMS. NEMS mandate the OAuth2.0 Client Credential flow regardless of the connectivity or protocols.
 
@@ -44,7 +37,7 @@ Your connection client ID and credential are provided to you if you have complet
 
    **Note**: Renewal is currently a manual process via the NEMS service desk, but an automated process is under development.
 
-## Connecting to NEMS
+### Connecting to NEMS
 
 Connecting to a NEMS event is a 2-step process.
 

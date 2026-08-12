@@ -37,16 +37,11 @@ Java reference implementation:
 
 ## Configure your network
 
-The NEMS event broker is publicly available and requires outbound ports to be accessible to subscribers to make the connection to the NEMS event broker. To achieve this, the following locations and ports must be accessible:
-
-|**Source**|**Target**|**Port**|
-| :- | :- | :- |
-|NEMS standard production environment for subscribers|api.nems.digital.health.nz|TCP 55443|
-|NEMS standard test environment for subscribers|api.test.nems.digital.health.nz|TCP 55443|
+The NEMS event broker is publicly available and requires outbound ports to be accessible to subscribers to make the connection to the NEMS event broker. The connectivity details will be provided to you once your onboarding to NEMS is approved.
 
 ## Connect and authenticate
 
-## Obtaining the ID and Access Tokens
+### Obtaining the ID and Access Tokens
 
 Your connection client ID and credential are provided to you if you have completed the NEMS onboard process. As a subscriber you will have the following responsibilities regarding OAuth credentials:
 
@@ -55,7 +50,7 @@ Your connection client ID and credential are provided to you if you have complet
 
    **Note**: Renewal is currently a manual process via the NEMS service desk, but an automated process is under development.
 
-## Connecting to NEMS
+### Connecting to NEMS
 
 Connecting to a NEMS event is a two-step process.
 
