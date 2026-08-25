@@ -20,31 +20,28 @@ Initially, you will receive this information for the NEMS test broker. This envi
 
 ## Configure your network
 
-The NEMS event broker is publicly available and requires an internet connection to be accessible to the NEMS to publish to the NEMS event broker. You can choose a TCP connection to use the native messaging protocols or publish to the NEMS REST endpoint. For this the following target servers and ports are required.
+The NEMS event broker is publicly accessible and requires an internet connection. Publishers must be able to connect to the internet to publish events to NEMS.
 
-|**Protocol**|**Source**|**Target**|**Connection**|
-| :-: | :- | :- | :- |
-|Native|NEMS production environment |api.nems.digital.health.nz|TCP 55443|
-|Native|NEMS test environment|api.test.nems.digital.health.nz|TCP 55443|
-|REST|NEMS production environment|api.nems.digital.health.nz|HTTP 9443|
-|REST|NEMS test environment|api.test.nems.digital.health.nz|HTTP 9443|
+Publishers can connect using a direct TCP connection and the supported native messaging protocols, or alternatively publish events through the NEMS REST endpoint.
+
+Connection details, including NEMS server endpoints and access information, will be provided once your onboarding request has been approved.
 
 ## Connect and authenticate
 
 The NEMS Publisher application will connect, authenticate, and publish the event messages. It will require the NEMS connection information provided as part of the NEMS application process.
 
-## Obtaining the ID and access tokens
+### Obtaining the ID and access tokens
 
 Publishers need to authenticate the publishing application to connect to NEMS. NEMS mandate the OAuth2.0 Client Credential flow regardless of the connectivity or protocols.
 
-Your connection client ID and credential are provided to you if you have completed the NEMS onboarding process. As a publisher you will have the following responsibilities regarding OAuth credentials:
+Your connection client id and credential are provided to you if you have completed the NEMS onboarding process. As a publisher you will have the following responsibilities regarding OAuth credentials:
 
 1. Ensure confidential authentication details such as secrets are stored and managed securely.
 2. Manage the life cycle of secrets. They must be renewed prior to expiry.
 
    **Note**: Renewal is currently a manual process via the NEMS service desk, but an automated process is under development.
 
-## Connecting to NEMS
+### Connecting to NEMS
 
 Connecting to a NEMS event is a 2-step process.
 

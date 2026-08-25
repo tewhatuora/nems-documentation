@@ -2,13 +2,13 @@
 
 ## Outreach Referral Events (technical design)
 
-This is a technical design document for Outreach Referral (OR) events. The target audiences are those working on OR task events publisher (FHIR Task Service), Placer and Filler service applications, and NEMS implementation of these task events.
+This technical design document describes the Outreach Referral (OR) events. It is intended for teams involved in the design, development, and implementation of OR task event publishing, consuming applications (Placer and Filler services), and the NEMS integration supporting these events.
 
 ---
 
 ## Background
 
-The Outreach Referral FHIR Task Service will be the central integration point to connect different services utilising the outreach capability by Whaihua. Together with the support of NEMS on task events, the FHIR workflow pattern H will be implemented to support the communications between the task placers and task fillers, see [Outreach Referral FHIR Task Solution Architecture Document](https://mohits.atlassian.net/wiki/spaces/FORT/pages/4073062700/Outreach+Referral+FHIR+Task+Solution+Architecture+Document).
+The Outreach Referral FHIR Task Service will be the central integration point to connect different services utilising the outreach capability by Whaihua. Together with the support of NEMS on task events, the FHIR workflow pattern H will be implemented to support the communications between the task placers and task fillers.
 
 ---
 
@@ -18,7 +18,7 @@ Outreach Referral solution is based on the events triggered by the state changes
 
 #### ServiceRequest state diagram:
 
-```
+```plantuml
 @startuml
 active : The request is in force and ready to be acted upon.
 onHold : The request (and any implicit authorization to act) has been temporarily withdrawn but is expected to resume in the future.
