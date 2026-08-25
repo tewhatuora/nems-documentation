@@ -2,7 +2,7 @@
 
 ## Outreach Referral Events (technical design)
 
-This is a technical design document for Outreach Referral (OR) events. The target audiences are those working on OR task events publisher (FHIR Task Service), Placer and Filler service applications, and NEMS implementation of these task events.
+This technical design document describes the Outreach Referral (OR) events. It is intended for teams involved in the design, development, and implementation of OR task event publishing, consuming applications (Placer and Filler services), and the NEMS integration supporting these events.
 
 ---
 
