@@ -27,28 +27,24 @@ You can use your technologies and programming languages of choice to implement t
 
 Please note these are examples only and you should consult the documentation of your chosen library.
 
-Java reference implementation:
+- [Java reference implementation](https://github.com/tewhatuora/nems-subscriber-java)
 
-[](https://github.com/tewhatuora/nems-subscriber-java)
-
-.Net reference implementation:
-
-[](https://github.com/tewhatuora/nems-subscriber-dotnet)
+- [.Net reference implementation](https://github.com/tewhatuora/nems-subscriber-dotnet)
 
 ## Configure your network
 
-The NEMS event broker is publicly available and requires outbound ports to be accessible to subscribers to make the connection to the NEMS event broker. The connectivity details will be provided to you once your onboarding to NEMS is approved.
+The NEMS event broker is publicly available and requires outbound ports to be accessible to subscribers to make the connection to the NEMS event broker. The connectivity details will be provided to you once your NEMS onboarding request has been approved.
 
 ## Connect and authenticate
 
 ### Obtaining the ID and Access Tokens
 
-Your connection client ID and credential are provided to you if you have completed the NEMS onboard process. As a subscriber you will have the following responsibilities regarding OAuth credentials:
+Your connection client id and credential are provided to you if you have completed the NEMS onboard process. As a subscriber you will have the following responsibilities regarding OAuth credentials:
 
 1. Ensure confidential authentication details such as secrets are stored and managed securely.
 2. Manage the life cycle of secrets. They must be renewed prior to expiry.
 
-   **Note**: Renewal is currently a manual process via the NEMS service desk, but an automated process is under development.
+   **Note**: Renewal is currently a manual process via the NEMS support team, but an automated process is under development.
 
 ### Connecting to NEMS
 
@@ -106,14 +102,20 @@ final PersistentMessageReceiver receiver = messagingService
 
 ## Consuming NEMS events
 
-Once a connection to NEMS has been established you will start consuming events you have subscribed to. The event data can be retrieved from the event metadata and payload and can be processed by your downstream process. Please refer to the following links for details on the NEMS event data.
+OOnce a connection to NEMS has been established, your application can begin consuming the events that it has been authorised to receive.
 
-Link: NEMS - Standards Reference
+Event information is contained within the event metadata and payload. Your application can retrieve and process this information to support downstream business processes, workflows, and integrations.
 
-Link: NEMS Event Detail e.g. Death Notice
+- [NEMS - Standards Reference](/docs/100-PubSub%20Standards.md)
+
+- [NEMS Event Detail e.g. Death Event](/docs/Event%20Design/01-DeathEventTechnical.md)
 
 ## Testing
 
-NEMS has a test event broker environment available to allow you to test your subscribing systems prior to moving into production and to support your ongoing development lifecycle.
+NEMS provides a test event broker environment that allows organisations to test and validate their subscriber applications before moving to production.
 
-We recommend you implement your unit tests with mocks to test your NEMS event consumption logics once you have developed your NEMS connection and reduce the dependency to the NEMS test environment in your development and testing process.
+The test environment can also be used to support ongoing development, testing, and release activities throughout the application lifecycle.
+
+We recommend using mocked events in unit tests to validate your NEMS event consumption logic once your connection to NEMS has been established.
+
+This approach reduces dependency on the NEMS test environment and supports a more efficient development and testing process.

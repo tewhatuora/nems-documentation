@@ -20,7 +20,11 @@ Initially, you will receive this information for the NEMS test broker. This envi
 
 ## Configure your network
 
-The NEMS event broker is publicly available and requires an internet connection to be accessible to the NEMS to publish to the NEMS event broker. You can choose a TCP connection to use the native messaging protocols or publish to the NEMS REST endpoint. Details of the NEMS server connectivity will be provided to you once the onboarding is approved.
+The NEMS event broker is publicly accessible and requires an internet connection. Publishers must be able to connect to the internet to publish events to NEMS.
+
+Publishers can connect using a direct TCP connection and the supported native messaging protocols, or alternatively publish events through the NEMS REST endpoint.
+
+Connection details, including NEMS server endpoints and access information, will be provided once your onboarding request has been approved.
 
 ## Connect and authenticate
 
@@ -30,7 +34,7 @@ The NEMS Publisher application will connect, authenticate, and publish the event
 
 Publishers need to authenticate the publishing application to connect to NEMS. NEMS mandate the OAuth2.0 Client Credential flow regardless of the connectivity or protocols.
 
-Your connection client ID and credential are provided to you if you have completed the NEMS onboarding process. As a publisher you will have the following responsibilities regarding OAuth credentials:
+Your connection client id and credential are provided to you if you have completed the NEMS onboarding process. As a publisher you will have the following responsibilities regarding OAuth credentials:
 
 1. Ensure confidential authentication details such as secrets are stored and managed securely.
 2. Manage the life cycle of secrets. They must be renewed prior to expiry.
