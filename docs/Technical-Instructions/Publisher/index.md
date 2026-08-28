@@ -8,13 +8,13 @@ This guide explains how to connect to the National Event Management Service (NEM
 
 Before you start, you will need to have registered your application with the NEMS team and have the following information available:
 
-- Host            URL of the message broker
-- VPN Name        The name of the NEMS broker
-- Topic Name      The name of the topic you are publishing to
-- Token Server    The OAuth server to renew your token
-- Client ID       Your client ID used for getting the OAuth token
-- Client Secret   Your client secret used for getting the OAuth token
-- Scope           The scope to renew your OAuth token.
+- **Host** &emsp;URL of the message broker
+- **VPN Name**&emsp;The name of the NEMS broker
+- **Topic Name**&emsp;The name of the topic you are publishing to
+- **Token Server**&emsp;The OAuth server to renew your token
+- **Client ID**&emsp;Your client ID used for getting the OAuth token
+- **Client Secret**&emsp;Your client secret used for getting the OAuth token
+- **Scope**&emsp;The scope to renew your OAuth token.
 
 Initially, you will receive this information for the NEMS test broker. This environment supports your integration with NEMS for event publishing. Once your development is tested and ready for production, the NEMS team will release the credentials for the NEMS production environment for your production release.
 
@@ -32,14 +32,14 @@ The NEMS Publisher application will connect, authenticate, and publish the event
 
 ### Obtaining the ID and access tokens
 
-Publishers need to authenticate the publishing application to connect to NEMS. NEMS mandate the OAuth2.0 Client Credential flow regardless of the connectivity or protocols.
+Publishers need to authenticate the publishing application to connect to NEMS. NEMS mandates the OAuth2.0 Client Credential flow regardless of the connectivity or protocols.
 
 Your connection client id and credential are provided to you if you have completed the NEMS onboarding process. As a publisher you will have the following responsibilities regarding OAuth credentials:
 
 1. Ensure confidential authentication details such as secrets are stored and managed securely.
 2. Manage the life cycle of secrets. They must be renewed prior to expiry.
 
-   **Note**: Renewal is currently a manual process via the NEMS service desk, but an automated process is under development.
+   **Note**: Renewal is currently a manual process via the NEMS support team, but an automated process is under development.
 
 ### Connecting to NEMS
 
@@ -50,7 +50,7 @@ Connecting to a NEMS event is a 2-step process.
 
 Regardless of the chosen protocol the publisher wants to implement, an OAuth token must be acquired to establish a connection.
 
-Below is the code snippet to demonstrate the initialisation of NEMS connection.
+Below is the code snippet to demonstrate the initialisation of a NEMS connection.
 
 ~~~Java
 
