@@ -97,6 +97,6 @@ The topic fields are described below.
 
 ```json
 {
-  "callbackUrl": "https://api.hip-uat.digital.health.nz/fhir/nhi/v1/"
+  "callbackUrl": "https://api.nes.digital.health.nz/fhir/nhi/v1/"
 }
 ```
