@@ -46,6 +46,8 @@ For death events, the topic taxonomy structure follows the overall topic taxonom
 
 service-domain/resource/event/verb/version/event-properties
 
+`demographics/patient/death/edit/v1/G00012-A/9999/G08307-E`
+
 The topic fields are elaborated in the table below 
 
 |**Enrolment Event Topic Field**|**Field Type**|**Value**|**Description**|
@@ -54,10 +56,10 @@ The topic fields are elaborated in the table below
 |resource|Root|“patient”|Aligned with FHIR EpisodeOfCare resource|
 |event category|Root|“death”|Event category|
 |verb|Root|Variable: new, edit, delete|Event action, one of the values|
-|version|Root|“0.1.0”|Starting version|
-|District|Event Property|8 character code or "null" (lowercase)|Location of the district relating to the person’s primary residential address. [Code Tables](https://www.tewhatuora.govt.nz/our-health-system/data-and-statistics/nz-health-statistics/data-references/code-tables/)|
+|version|Root|“v1”|Starting version|
+|District|Event Property|8 character code or "null" (lowercase)|Organisation Id of the district relating to the person’s primary residential address. [Code Tables](https://www.tewhatuora.govt.nz/our-health-system/data-and-statistics/nz-health-statistics/data-references/code-tables/)|
 |Domicile|Event Property|4 character district code or "null" (lowercase)| Domicile code, representing a person’s primary residential address. [Domicile Codes](https://fhir.org.nz/ig/base/CodeSystem-domicile-code.html) |
-|GP Practice|Event Property|8 character code or "null" (lowercase)|The active GP practice of the deceased healthcare user. [Facility Codes](https://www.tewhatuora.govt.nz/our-health-system/data-and-statistics/nz-health-statistics/data-references/code-tables/common-code-tables#facility-code-table) **Note**: Not all healthcare users have a GP practice. Where no GP practice exists for the NHI, this field will be "**null**"|
+|GP Practice|Event Property|8 character code or "null" (lowercase)|Organisation Id of the active GP practice of the deceased healthcare user. [Facility Codes](https://www.tewhatuora.govt.nz/our-health-system/data-and-statistics/nz-health-statistics/data-references/code-tables/common-code-tables#facility-code-table)|
 
 ## **Message header (Event metadata)**
 
