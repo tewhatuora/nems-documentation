@@ -8,10 +8,13 @@ This is a technical design document for the NEMS **Simple POCT Result event** (P
 The publisher system is the **Health NZ FHIR Server**, and the initial subscriber system will be the **Northern Region's Eclair system**. The national **Diagnostic Data Repository (DDR)** may also become a future subscriber to this event.
 
 ## Background
+A Simple Point-of-Care Test (POCT) is a medical test performed on a patient’s sample (i.e. blood, saliva etc) and analysed on the spot using a diagnostic device, rather than sending the sample to a laboratory for analysis.
+
+NEMS currently sends a notification event to subscribing systems when a Simple Point-of-Care Test result for Hepatitis B or Hepatitis C has been uploaded through the POCT Upload Solution.
 
 [Requirements - POCT Upload Solutions - Hira Programme - Confluence](https://3dhbictservice.atlassian.net/wiki/spaces/HIRAP/pages/4008247575)
 
-## Process View
+## Process View (for current Hepatitis B and Hepatitis C POCT only)
 
 1. User submits the POCT form via Provider View.
 2. Data is stored in the FHIR Server.
@@ -21,7 +24,6 @@ The publisher system is the **Health NZ FHIR Server**, and the initial subscribe
 6. The API calls the FHIR Server API to retrieve the actual POCT result.
 7. The API transforms the result into HL7 format and loads it into Eclair/TestSafe.
 
-### TBC Events and Event Data
 
 > **Note:** All **POCT Result** submissions via the *Viral Hepatitis Point of Care Test* FHIR form will result in a NEMS event notification being published.
 
