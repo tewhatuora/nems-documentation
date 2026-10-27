@@ -14,11 +14,11 @@ Providers will consume the NEMS event and make a call to the FHIR API to retriev
 
 ## Background
 
-The **Claims Gateway** solution, published via the **Digital Services Hub (DSH)**, implements a modern and reliable method for providers, via their Practice Management System (PMS), to submit payment requests (FHIR Claims) to the Health NZ FHIR API.
+The **Claims Gateway** solution, published via the **Digital Services Hub (DSH)**, enables providers, via their Practice Management System (PMS), to submit payment requests (FHIR Claims) to the Health NZ FHIR API.
 
-Health NZ will determine whether a claim is approved or denied by applying business rules relevant to the service being delivered. A determination outcome, represented as a FHIR `ClaimResponse`, details the approval or denial of the claim and is submitted to the FHIR API.
+Health NZ determines whether a claim is approved or denied by applying business rules relevant to the service being delivered. A determination outcome, represented as a FHIR **`ClaimResponse`**, details the approval or denial of the claim and is submitted to the FHIR API.
 
-An Event-Driven Architecture (EDA) approach is used to notify the provider that a new or updated ClaimResponse is available. On receipt of the event, the provider will, via their PMS, fetch and store the ClaimResponse from the API.
+An Event-Driven Architecture (EDA) approach is having NEMS to notify the provider that a new or updated ClaimResponse is available. On receipt of the event, the provider will, via their PMS, fetch and store the ClaimResponse from the API.
 
 The technical design of the NEMS Claim Response event is based on and supports the **Claims Gateway** solution.
 
@@ -31,13 +31,14 @@ Initial consumers of the Claims Gateway and subscribers to the NEMS Claim Respon
 1. Online GP/telehealth service providers via their GP PMS, for example:
    - indici
    - Medtech
+   These consumers submit General Medical Services claims for fee for service consultations.
 
 2. Pharmacies via their Pharmacy Management System (PhMS), for example:
    - Toniq
    - RxOne
    - Script Sense
 
-   These consumers submit ICPSA claims for dispensed medications.
+   These consumers submit Integrated Community Pharmacy Services Agreement (ICPSA) claims for dispensed medications.
 
 ---
 
@@ -62,7 +63,7 @@ The reasons for this approach are:
 For Claim Response events, the topic taxonomy follows the structure below:
 
 ```text
-root/event-properties
+root properties + event-properties
 ```
 
 The topic fields are described in the following table.
