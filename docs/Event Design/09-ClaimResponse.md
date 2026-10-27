@@ -18,7 +18,7 @@ The **Claims Gateway** solution, published via the **Digital Services Hub (DSH)*
 
 Health NZ determines whether a claim is approved or denied by applying business rules relevant to the service being delivered. A determination outcome, represented as a FHIR **`ClaimResponse`**, details the approval or denial of the claim and is submitted to the FHIR API.
 
-NEMS notifies the provider that a new or updated ClaimResponse is available. On receipt of the event, the provider will, via their PMS, fetch and store the ClaimResponse from the API.
+NEMS notifies the subscribing provider when a new or updated ClaimResponse is available. On receipt of the event, the provider will, via their PMS, fetch and store the ClaimResponse from the API.
 
 The technical design of the NEMS Claim Response event is based on and supports the **Claims Gateway** solution.
 
