@@ -18,7 +18,7 @@ The **Claims Gateway** solution, published via the **Digital Services Hub (DSH)*
 
 Health NZ determines whether a claim is approved or denied by applying business rules relevant to the service being delivered. A determination outcome, represented as a FHIR **`ClaimResponse`**, details the approval or denial of the claim and is submitted to the FHIR API.
 
-An Event-Driven Architecture (EDA) approach is having NEMS to notify the provider that a new or updated ClaimResponse is available. On receipt of the event, the provider will, via their PMS, fetch and store the ClaimResponse from the API.
+NEMS notifies the provider that a new or updated ClaimResponse is available. On receipt of the event, the provider will, via their PMS, fetch and store the ClaimResponse from the API.
 
 The technical design of the NEMS Claim Response event is based on and supports the **Claims Gateway** solution.
 
@@ -31,6 +31,7 @@ Initial consumers of the Claims Gateway and subscribers to the NEMS Claim Respon
 1. Online GP/telehealth service providers via their GP PMS, for example:
    - indici
    - Medtech
+
    These consumers submit General Medical Services claims for fee for service consultations.
 
 2. Pharmacies via their Pharmacy Management System (PhMS), for example:
@@ -63,7 +64,7 @@ The reasons for this approach are:
 For Claim Response events, the topic taxonomy follows the structure below:
 
 ```text
-root properties + event-properties
+`operating/claimresponse/{claim type}/{verb}/v1/{org identifier}/
 ```
 
 The topic fields are described in the following table.
@@ -75,7 +76,7 @@ The topic fields are described in the following table.
 | 3 | event category | Root | `icpsa`, `onlinegp` | Claim type. See [FHIR Claim Type ValueSet](https://build.fhir.org/valueset-claim-type.html) |
 | 4 | verb (past tense) | Root | `produced`, `cancelled` | Event action, using one of the defined values |
 | 5 | version | Root | `v1` | Starting version |
-| 6 | claiming organisation id | Event Property | `orgId` | HPI Organisation ID of the claiming organisation. Consider whether this is sufficient for message routing. |
+| 6 | claiming organisation id | Event Property | `orgId`, `claimant id`| HPI Organisation ID of the claiming organisation (or use case specific organisation identifier). Consider whether this is sufficient for message routing. |
 
 ---
 
