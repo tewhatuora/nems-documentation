@@ -20,7 +20,7 @@ As additional use cases emerge, the Diagnostic Report Event model will continue 
 
 ## FSP (FIT for Symptomatic Programme) Eventing Overview
  
-![Diagnostic Report Event Process](/docs/Event%20Design/f301325a-c471-44d1-9ca0-4c6ca3b6e05e.png)
+![Diagnostic Report Event Process](./f301325a-c471-44d1-9ca0-4c6ca3b6e05e.png)
 
 The Diagnostic Report Event provides a mechanism for publishing significant lifecycle events associated with the creation and processing of diagnostic reports. Event types correspond to business state changes within a diagnostic workflow and enable authorised consumers to react to those changes in near real time. For example, within the FIT for Symptomatic Programme (FSP), diagnostic reports may generate events such as Ordered, Registered, and Rejected. The Registered event is the most important event type, as it indicates the successful registration of a diagnostic result and typically triggers downstream clinical, operational, and reporting processes.
 
