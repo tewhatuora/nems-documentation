@@ -63,7 +63,7 @@ The topic fields are described below.
 | Header | Key Literal | Description | Required | Format / Values | Example |
 |---|---|---|---|---|---|
 | ID | `solace-user-property-id` | Message ID, unique for each publisher |  | GUID correlation ID | `987298dd-c484-462f-a15d-f18a97267959` |
-| Source | `solace-user-property-source` | Publisher URI reference |  | URI | UAT: `https://fhir.api-uat.digital.health.nz/R4`<br>Prod: `https://fhir.api.digital.health.nz/` |
+| Source | `solace-user-property-source` | Publisher URI reference |  | URI | UAT: `https://fhir.api-uat.digital.health.nz/R4`<br/>Prod: `https://fhir.api.digital.health.nz/` |
 | Time | `solace-user-property-time` | UTC time when the message is published |  | `YYYY-MM-DDTHH:MM:SS` | `2024-11-30T18:54:43Z` |
 | Spec Version | `version` | Version of the CloudEvents specification | Optional | `{major}.{minor}` | `1.0` |
 | Type | `solace-user-property-type` | Substring of the topic taxonomy including root through version |  | `{root}/{version}` | `diagnostic/result/simplepoct/submitted/1.0.0` |
