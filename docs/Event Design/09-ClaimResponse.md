@@ -74,7 +74,7 @@ The topic fields are described in the following table.
 | 1 | service-domain | Root | `operations` | `finance` is the service domain for financial management events |
 | 2 | resource | Root | `claimresponse` | Aligned with the FHIR `ClaimResponse` resource |
 | 3 | event category | Root | `icpsa`, `onlinegp` | Claim type. See [FHIR Claim Type ValueSet](https://build.fhir.org/valueset-claim-type.html) |
-| 4 | verb (past tense) | Root | `produced`, `cancelled` | Event action, using one of the defined values |
+| 4 | verb (past tense) | Root | `produced`| Event action, using one of the defined values |
 | 5 | version | Root | `v1` | Starting version |
 | 6 | claiming organisation id | Event Property | `orgId`, `claimant id`| HPI Organisation ID of the claiming organisation (or use case specific organisation identifier). Consider whether this is sufficient for message routing. |
 
